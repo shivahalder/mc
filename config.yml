@@ -1,0 +1,3 @@
+web-port: 8080
+enable-ssl: false
+check-updates: false
