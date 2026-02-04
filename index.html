@@ -3,12 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UC Minecraft | Official Server</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Primary Meta Tags -->
+  <title>UC Minecraft | Official Server - Beach Party Edition</title>
+  <meta name="title" content="UC Minecraft Server - Beach Party Edition">
+  <meta name="description" content="Join the official UC Minecraft SMP server! Beach Party Edition - A community server for everyone. Connect now at ucminecraft.artisen.xyz">
+  
+  <!-- Open Graph / Facebook / Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ucminecraft.artisen.xyz/">
+  <meta property="og:title" content="UC Minecraft Server - Beach Party Edition">
+  <meta property="og:description" content="Join the official UC Minecraft SMP server! Beach Party Edition - A community server for everyone. Connect now at ucminecraft.artisen.xyz">
+  <meta property="og:image" content="https://ucminecraft.artisen.xyz/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://ucminecraft.artisen.xyz/">
+  <meta property="twitter:title" content="UC Minecraft Server - Beach Party Edition">
+  <meta property="twitter:description" content="Join the official UC Minecraft SMP server! Beach Party Edition - A community server for everyone.">
+  <meta property="twitter:image" content="https://ucminecraft.artisen.xyz/og-image.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
-    /* Previous CSS styles remain exactly the same */
     * {
       margin: 0;
       padding: 0;
@@ -23,15 +47,22 @@
       --sand-dark: #d2b48c;
       --minecraft-green: #55aa55;
       --minecraft-dark: #2d2d2d;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+      --shadow-xl: 0 12px 32px rgba(0,0,0,0.18);
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 50%, #F4A460 50.1%, #DEB887 100%);
       background-attachment: fixed;
       min-height: 100vh;
-      color: #333;
+      color: #1a1a1a;
       overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .font-pixel {
@@ -39,53 +70,58 @@
       line-height: 1.6;
     }
 
-    /* Container */
     .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 20px;
     }
 
-    /* Header */
+    /* ============================================
+       HEADER & LOGO
+    ============================================ */
     .header {
       text-align: center;
-      padding: 40px 20px;
+      padding: 50px 20px 40px;
       position: relative;
     }
 
     .logo-container {
       display: inline-flex;
       align-items: center;
-      gap: 25px;
+      gap: 30px;
       background: rgba(255,255,255,0.98);
-      padding: 25px 50px;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      margin-bottom: 40px;
+      padding: 30px 60px;
+      border-radius: 24px;
+      box-shadow: var(--shadow-xl);
+      margin-bottom: 50px;
       border: 4px solid var(--uc-blue);
-      transform: translateZ(0);
-      will-change: transform;
-      backface-visibility: hidden;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease;
+    }
+
+    .logo-container:hover {
+      transform: translateY(-5px);
     }
 
     .logo {
-      width: 100px;
-      height: 100px;
-      background: var(--uc-gold);
-      border: 4px solid #000;
-      border-radius: 12px;
+      width: 110px;
+      height: 110px;
+      background: linear-gradient(135deg, var(--uc-gold), #e6a000);
+      border: 4px solid var(--uc-blue);
+      border-radius: 16px;
       position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-md);
     }
 
     .logo-inner {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
-      background: var(--uc-blue);
-      border-radius: 6px;
+      top: 22px;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      background: linear-gradient(135deg, var(--uc-blue), #00509E);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -94,65 +130,89 @@
     .logo-inner:before {
       content: "UC";
       font-family: 'Press Start 2P', cursive;
-      font-size: 24px;
+      font-size: 26px;
       color: var(--uc-gold);
       font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
 
     .title-group h1 {
-      font-size: 48px;
+      font-size: 52px;
       color: var(--uc-blue);
-      margin-bottom: 8px;
-      text-shadow: 3px 3px 0px var(--uc-gold);
-      letter-spacing: 1px;
-    }
-
-    .title-group p {
-      font-size: 18px;
-      color: var(--uc-gold);
-      font-weight: 800;
-      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-shadow: 3px 3px 0px var(--uc-gold), 5px 5px 10px rgba(0,0,0,0.1);
       letter-spacing: 2px;
     }
 
-    /* Server Status Card - Optimized */
+    .title-group p {
+      font-size: 19px;
+      color: var(--uc-gold);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* ============================================
+       SERVER STATUS CARD
+    ============================================ */
     .status-card {
-      background: rgba(0,0,0,0.92);
+      background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.92));
       border: 4px solid var(--uc-gold);
-      border-radius: 15px;
-      padding: 25px;
-      max-width: 500px;
-      margin: 0 auto 40px;
+      border-radius: 20px;
+      padding: 35px;
+      max-width: 550px;
+      margin: 0 auto 50px;
       color: white;
-      transform: translateZ(0);
-      will-change: transform, opacity;
-      backface-visibility: hidden;
+      box-shadow: var(--shadow-xl), 0 0 0 1px rgba(253, 181, 21, 0.2);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .status-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--uc-gold), var(--uc-blue), var(--uc-gold));
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     .status-header {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 15px;
+      gap: 15px;
+      margin-bottom: 20px;
     }
 
     .status-dot {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: #10B981;
-      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+      animation: pulse 2s ease-in-out infinite;
     }
 
     .status-dot.offline {
       background: #EF4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
       animation: none;
     }
 
     .status-dot.loading {
       background: #F59E0B;
-      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
     }
 
     @keyframes pulse {
@@ -161,80 +221,128 @@
         transform: scale(1); 
       }
       50% { 
-        opacity: 0.7; 
-        transform: scale(0.95); 
+        opacity: 0.6; 
+        transform: scale(0.9); 
       }
     }
 
     .player-count {
-      font-size: 52px;
+      font-size: 64px;
       text-align: center;
       color: var(--uc-gold);
-      margin: 15px 0;
+      margin: 20px 0;
       font-family: 'Press Start 2P', cursive;
-      text-shadow: 0 0 10px rgba(253, 181, 21, 0.3);
+      text-shadow: 0 0 20px rgba(253, 181, 21, 0.4), 0 4px 8px rgba(0,0,0,0.3);
+      letter-spacing: 4px;
     }
 
     .server-ip {
-      background: #111;
-      padding: 18px;
-      border-radius: 10px;
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+      padding: 24px;
+      border-radius: 12px;
       text-align: center;
-      margin-top: 20px;
-      border: 2px solid #333;
+      margin-top: 25px;
+      border: 2px solid #2a2a2a;
       cursor: pointer;
-      transition: all 0.2s ease;
-      transform: translateZ(0);
-      will-change: transform;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .server-ip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .server-ip:hover::before {
+      left: 100%;
     }
 
     .server-ip:hover {
-      background: #1a1a1a;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
       transform: scale(1.02);
+      border-color: var(--uc-gold);
     }
 
     .server-ip code {
       color: #10B981;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
-      font-family: 'Courier New', monospace;
+      font-family: 'Monaco', 'Courier New', monospace;
+      letter-spacing: 1px;
     }
 
-    /* Action Buttons - Optimized */
+    /* ============================================
+       ACTION BUTTONS
+    ============================================ */
     .action-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 18px;
       justify-content: center;
-      margin: 30px 0;
-      transform: translateZ(0);
+      margin: 40px 0;
     }
 
     .btn {
-      padding: 18px 35px;
+      padding: 20px 40px;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       font-weight: 700;
       font-size: 16px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      transform: translateZ(0);
-      will-change: transform;
-      backface-visibility: hidden;
+      gap: 12px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
     }
 
     .btn:hover {
       transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      box-shadow: var(--shadow-xl);
     }
 
     .btn:active {
       transform: translateY(0) scale(0.98);
+    }
+
+    .btn i {
+      font-size: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn span {
+      position: relative;
+      z-index: 1;
     }
 
     .btn-primary {
@@ -248,7 +356,7 @@
     }
 
     .btn-instagram {
-      background: linear-gradient(135deg, #833AB4, #E1306C);
+      background: linear-gradient(135deg, #833AB4, #E1306C, #FD8D32);
       color: white;
     }
 
@@ -257,36 +365,42 @@
       color: white;
     }
 
-    /* Cards - Optimized */
+    /* ============================================
+       CARDS
+    ============================================ */
     .card {
       background: rgba(255,255,255,0.98);
-      border-radius: 20px;
-      padding: 40px;
-      margin-bottom: 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      border: 3px solid rgba(253, 181, 21, 0.25);
-      transform: translateZ(0);
-      will-change: transform;
-      backface-visibility: hidden;
+      border-radius: 24px;
+      padding: 50px;
+      margin-bottom: 50px;
+      box-shadow: var(--shadow-xl);
+      border: 3px solid rgba(253, 181, 21, 0.3);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
     }
 
     .card-dark {
       background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
       color: white;
+      border-color: rgba(253, 181, 21, 0.5);
     }
 
     .card h2 {
-      font-size: 36px;
+      font-size: 40px;
       color: var(--uc-blue);
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       text-align: center;
       position: relative;
-      padding-bottom: 15px;
+      padding-bottom: 20px;
     }
 
     .card-dark h2 {
       color: var(--uc-gold);
-      text-shadow: 0 0 10px rgba(253, 181, 21, 0.2);
+      text-shadow: 0 0 20px rgba(253, 181, 21, 0.3);
     }
 
     .card h2:after {
@@ -295,156 +409,210 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 100px;
-      height: 4px;
-      background: var(--uc-gold);
-      border-radius: 2px;
+      width: 120px;
+      height: 5px;
+      background: linear-gradient(90deg, transparent, var(--uc-gold), transparent);
+      border-radius: 3px;
     }
 
-    /* How to Join Steps - Optimized */
+    /* ============================================
+       HOW TO JOIN STEPS
+    ============================================ */
     .steps {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      margin-top: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
     }
 
     .step {
       text-align: center;
-      padding: 25px;
+      padding: 35px 25px;
       background: linear-gradient(135deg, #ffffff, #f8f9fa);
-      border-radius: 15px;
-      border: 2px solid var(--uc-gold);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateZ(0);
-      will-change: transform;
+      border-radius: 20px;
+      border: 3px solid var(--uc-gold);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--uc-blue), var(--uc-gold), var(--uc-blue));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .step:hover::before {
+      opacity: 1;
     }
 
     .step:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--uc-blue);
     }
 
     .step-number {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       background: linear-gradient(135deg, var(--uc-blue), #00509E);
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 800;
-      margin: 0 auto 20px;
-      box-shadow: 0 4px 12px rgba(0, 50, 98, 0.3);
+      margin: 0 auto 25px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .step-number::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 50%;
+      border: 3px solid var(--uc-gold);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .step:hover .step-number::after {
+      opacity: 1;
     }
 
     .step h3 {
       font-size: 20px;
       color: var(--uc-blue);
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     .step p {
       color: #555;
-      line-height: 1.6;
+      line-height: 1.7;
       font-size: 15px;
     }
 
-    /* Alert */
+    .step code {
+      background: #f0f0f0;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      color: var(--uc-blue);
+      font-size: 14px;
+    }
+
+    /* ============================================
+       ALERT
+    ============================================ */
     .alert {
       background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-      border-left: 5px solid #F59E0B;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
+      border-left: 6px solid #F59E0B;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 35px;
       display: flex;
       align-items: start;
-      gap: 15px;
-      transform: translateZ(0);
+      gap: 18px;
+      box-shadow: var(--shadow-sm);
     }
 
     .alert i {
       color: #F59E0B;
-      font-size: 24px;
-      margin-top: 2px;
+      font-size: 26px;
+      margin-top: 3px;
     }
 
     .alert-content h3 {
       font-size: 18px;
       color: #92400E;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
 
     .alert-content p {
       color: #78350F;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    /* Leaderboard - Optimized */
+    /* ============================================
+       LEADERBOARD
+    ============================================ */
     .leaderboard-item {
       display: flex;
       align-items: center;
-      padding: 20px;
-      margin-bottom: 15px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-      border-radius: 12px;
-      border-left: 5px solid var(--uc-gold);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateZ(0);
-      will-change: transform;
+      padding: 25px;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      border-radius: 16px;
+      border-left: 6px solid var(--uc-gold);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .leaderboard-item:hover {
-      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.08));
-      transform: translateX(8px);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.1));
+      transform: translateX(10px) scale(1.02);
+      box-shadow: var(--shadow-md);
     }
 
     .rank {
-      width: 50px;
-      height: 50px;
-      background: var(--uc-blue);
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(135deg, var(--uc-blue), #00509E);
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 20px;
-      margin-right: 20px;
+      font-size: 22px;
+      margin-right: 25px;
       flex-shrink: 0;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: var(--shadow-md);
     }
 
     .rank-1 {
       background: linear-gradient(135deg, #FFD700, #FFA500);
       color: #003262;
-      font-size: 24px;
-      width: 60px;
-      height: 60px;
+      font-size: 26px;
+      width: 65px;
+      height: 65px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
     }
 
     .rank-2 {
       background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
       color: #003262;
+      box-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
     }
 
     .rank-3 {
       background: linear-gradient(135deg, #CD7F32, #8B4513);
       color: white;
+      box-shadow: 0 0 15px rgba(205, 127, 50, 0.4);
     }
 
     .player-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
+      width: 65px;
+      height: 65px;
+      border-radius: 10px;
       border: 3px solid var(--uc-gold);
-      margin-right: 20px;
+      margin-right: 25px;
       image-rendering: pixelated;
       flex-shrink: 0;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: var(--shadow-sm);
     }
 
     .player-info {
@@ -452,61 +620,63 @@
     }
 
     .player-name {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
 
     .player-hours {
       background: linear-gradient(135deg, var(--uc-blue), #00509E);
       color: white;
-      padding: 8px 20px;
-      border-radius: 20px;
+      padding: 10px 24px;
+      border-radius: 25px;
       font-weight: 700;
       font-size: 18px;
       flex-shrink: 0;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: var(--shadow-sm);
     }
 
-    /* Gallery - Optimized */
+    /* ============================================
+       GALLERY
+    ============================================ */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 25px;
-      margin-top: 30px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
     }
 
     .gallery-item {
       background: white;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateZ(0);
-      will-change: transform;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
     }
 
     .gallery-item:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      transform: translateY(-12px) scale(1.03);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--uc-gold);
     }
 
     .gallery-img {
       width: 100%;
-      height: 200px;
+      height: 220px;
       object-fit: cover;
       border-bottom: 4px solid var(--uc-gold);
     }
 
     .gallery-info {
-      padding: 20px;
+      padding: 25px;
     }
 
     .gallery-title {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 700;
       color: var(--uc-blue);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .gallery-meta {
@@ -517,7 +687,9 @@
       font-size: 14px;
     }
 
-    /* Modal */
+    /* ============================================
+       MODAL
+    ============================================ */
     .modal {
       position: fixed;
       top: 0;
@@ -530,7 +702,7 @@
       justify-content: center;
       z-index: 1000;
       padding: 20px;
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(8px);
     }
 
     .modal.hidden {
@@ -539,21 +711,21 @@
 
     .modal-content {
       background: white;
-      padding: 40px;
-      border-radius: 20px;
-      max-width: 600px;
+      padding: 50px;
+      border-radius: 24px;
+      max-width: 650px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
       border: 4px solid var(--uc-gold);
-      transform: translateZ(0);
-      animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-xl);
+      animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     @keyframes modalSlideIn {
       from {
         opacity: 0;
-        transform: translateY(20px) scale(0.95);
+        transform: translateY(30px) scale(0.9);
       }
       to {
         opacity: 1;
@@ -562,26 +734,26 @@
     }
 
     .modal h3 {
-      font-size: 28px;
+      font-size: 32px;
       color: var(--uc-blue);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .modal-steps {
-      margin: 25px 0;
+      margin: 30px 0;
     }
 
     .modal-step {
       display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
+      gap: 20px;
+      margin-bottom: 25px;
       align-items: start;
     }
 
     .modal-step-number {
-      width: 40px;
-      height: 40px;
-      background: var(--uc-blue);
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--uc-blue), #00509E);
       color: white;
       border-radius: 50%;
       display: flex;
@@ -589,27 +761,39 @@
       justify-content: center;
       font-weight: 700;
       flex-shrink: 0;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: var(--shadow-sm);
+      font-size: 18px;
     }
 
     .modal-step-content h4 {
-      font-size: 16px;
+      font-size: 17px;
       color: var(--uc-blue);
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      font-weight: 700;
     }
 
     .modal-step-content p {
       color: #666;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
-    /* Loading */
+    .modal-step-content code {
+      background: #f0f0f0;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      color: var(--uc-blue);
+    }
+
+    /* ============================================
+       LOADING SPINNER
+    ============================================ */
     .spinner {
       border: 4px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
       border-top: 4px solid var(--uc-gold);
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       animation: spin 0.8s linear infinite;
       margin: 0 auto;
     }
@@ -619,43 +803,103 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Footer */
+    /* ============================================
+       FOOTER
+    ============================================ */
     footer {
       text-align: center;
-      padding: 40px 20px;
-      background: rgba(0,0,0,0.8);
+      padding: 50px 20px;
+      background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(20,20,20,0.85));
       color: white;
-      margin-top: 60px;
+      margin-top: 80px;
+      border-top: 4px solid var(--uc-gold);
     }
 
     footer p {
-      margin: 10px 0;
+      margin: 12px 0;
       font-size: 16px;
     }
 
-    /* Responsive */
+    /* ============================================
+       TOAST NOTIFICATIONS
+    ============================================ */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.9));
+      color: white;
+      padding: 20px 32px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-xl);
+      z-index: 2000;
+      animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      border: 2px solid var(--uc-gold);
+      max-width: 400px;
+      word-break: break-word;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(450px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ============================================
+       SCROLLBAR STYLING
+    ============================================ */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.1);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--uc-gold), #e6a000);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #e6a000, var(--uc-gold));
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+    ============================================ */
     @media (max-width: 768px) {
       .title-group h1 {
-        font-size: 32px;
+        font-size: 36px;
+      }
+      
+      .title-group p {
+        font-size: 14px;
       }
       
       .logo-container {
         flex-direction: column;
-        padding: 25px;
-        gap: 20px;
+        padding: 30px;
+        gap: 25px;
       }
       
       .logo {
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 90px;
       }
       
       .card {
-        padding: 25px;
+        padding: 30px 20px;
       }
       
       .card h2 {
-        font-size: 28px;
+        font-size: 30px;
       }
       
       .steps {
@@ -670,53 +914,25 @@
         width: 100%;
         justify-content: center;
       }
-    }
 
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: rgba(0,0,0,0.9);
-      color: white;
-      padding: 18px 28px;
-      border-radius: 10px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-      z-index: 2000;
-      animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255,255,255,0.1);
-      max-width: 350px;
-      word-break: break-word;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
+      .modal-content {
+        padding: 30px;
       }
-      to {
-        transform: translateX(0);
-        opacity: 1;
+
+      .status-card {
+        padding: 25px;
       }
-    }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
+      .player-count {
+        font-size: 48px;
+      }
 
-    ::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.1);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--uc-gold);
-      border-radius: 5px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #e6a000;
+      .toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        max-width: calc(100% - 40px);
+      }
     }
   </style>
 </head>
@@ -740,8 +956,8 @@
         <div class="modal-step-number">1</div>
         <div class="modal-step-content">
           <h4>Join the Minecraft Server</h4>
-          <p>Connect to: <code style="background:#f0f0f0;padding:4px 8px;border-radius:4px;font-weight:700;">ucminecraft.artisen.xyz</code></p>
-          <p style="font-size:13px;color:#999;margin-top:4px;">Java: Default port | Bedrock: Port 19133</p>
+          <p>Connect to: <code>ucminecraft.artisen.xyz</code></p>
+          <p style="font-size:13px;color:#999;margin-top:6px;">Java: Default port | Bedrock: Port 19133</p>
         </div>
       </div>
       
@@ -758,7 +974,7 @@
         <div class="modal-step-content">
           <h4>Send Code to Discord Bot</h4>
           <p>DM your code to <strong>UC Minecraft#2543</strong> on Discord</p>
-          <p style="font-size:13px;color:#999;margin-top:4px;">(Bot has UC Davis Aggie Mascot profile)</p>
+          <p style="font-size:13px;color:#999;margin-top:6px;">(Bot has UC Davis Aggie Mascot profile)</p>
         </div>
       </div>
       
@@ -771,14 +987,14 @@
       </div>
     </div>
     
-    <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin-top:20px;">
-      <p style="color:#666;font-size:14px;">
-        <strong>Need help?</strong> Contact <code style="background:#000;color:#10B981;padding:2px 6px;border-radius:4px;">@lilhoodrathorsey</code> or <code style="background:#000;color:#10B981;padding:2px 6px;border-radius:4px;">@Maskedd</code> on Discord.
+    <div style="background:#f8f9fa;padding:18px;border-radius:10px;margin-top:25px;">
+      <p style="color:#666;font-size:14px;line-height:1.6;">
+        <strong>Need help?</strong> Contact <code style="background:#000;color:#10B981;padding:3px 8px;border-radius:4px;">@lilhoodrathorsey</code> or <code style="background:#000;color:#10B981;padding:3px 8px;border-radius:4px;">@Maskedd</code> on Discord.
       </p>
     </div>
     
-    <button onclick="closeVerificationModal()" class="btn btn-primary" style="width:100%;margin-top:20px;justify-content:center;">
-      UNDERSTOOD
+    <button onclick="closeVerificationModal()" class="btn btn-primary" style="width:100%;margin-top:25px;justify-content:center;">
+      <span>UNDERSTOOD</span>
     </button>
   </div>
 </div>
@@ -810,21 +1026,28 @@
           <div class="spinner"></div>
         </span>
       </div>
-      <p style="text-align:center;color:#999;font-size:14px;">PLAYERS ONLINE</p>
+      <p style="text-align:center;color:#aaa;font-size:15px;font-weight:600;">PLAYERS ONLINE</p>
       
       <div class="server-ip" onclick="copyServerIP()" title="Click to copy">
-        <p style="color:#999;font-size:12px;margin-bottom:5px;">SERVER IP</p>
+        <p style="color:#999;font-size:13px;margin-bottom:8px;font-weight:600;">SERVER IP</p>
         <code>ucminecraft.artisen.xyz</code>
-        <p style="color:#666;font-size:11px;margin-top:8px;">Click to copy • Version 1.21.10</p>
+        <p style="color:#777;font-size:12px;margin-top:10px;">Click to copy • Version 1.21.10</p>
       </div>
     </div>
     
     <!-- Action Buttons -->
-      <a href="https://discord.gg/peSB774D5j" class="btn btn-discord" target="_blank">
-        <i class="fab fa-discord"></i> JOIN DISCORD
+    <div class="action-buttons">
+      <button onclick="showVerificationModal()" class="btn btn-success">
+        <i class="fas fa-shield-alt"></i>
+        <span>GET VERIFIED</span>
+      </button>
+      <a href="https://discord.gg/peSB774D5j" class="btn btn-discord" target="_blank" rel="noopener">
+        <i class="fab fa-discord"></i>
+        <span>JOIN DISCORD</span>
       </a>
-      <a href="https://www.instagram.com/ucminecraft/" class="btn btn-instagram" target="_blank">
-        <i class="fab fa-instagram"></i> INSTAGRAM
+      <a href="https://www.instagram.com/ucminecraft/" class="btn btn-instagram" target="_blank" rel="noopener">
+        <i class="fab fa-instagram"></i>
+        <span>INSTAGRAM</span>
       </a>
     </div>
   </header>
@@ -837,7 +1060,7 @@
       <i class="fas fa-exclamation-triangle"></i>
       <div class="alert-content">
         <h3>ACCOUNT LINKING REQUIRED</h3>
-        <p>"Due to repeated griefing this month, the University of California Minecraft server now requires all players to link their Discord accounts to ensure a fair and enjoyable experience."</p>
+        <p>Due to repeated griefing this month, the University of California Minecraft server now requires all players to link their Discord accounts to ensure a fair and enjoyable experience.</p>
       </div>
     </div>
     
@@ -845,8 +1068,8 @@
       <div class="step">
         <div class="step-number">1</div>
         <h3>JOIN MINECRAFT</h3>
-        <p>Connect to <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">ucminecraft.artisen.xyz</code></p>
-        <p style="font-size:12px;color:#999;margin-top:8px;">Java: Default • Bedrock: Port 19133</p>
+        <p>Connect to <code>ucminecraft.artisen.xyz</code></p>
+        <p style="font-size:13px;color:#999;margin-top:10px;">Java: Default • Bedrock: Port 19133</p>
       </div>
       
       <div class="step">
@@ -859,13 +1082,13 @@
         <div class="step-number">3</div>
         <h3>DM DISCORD BOT</h3>
         <p>Send your code to <strong>UC Minecraft#2543</strong></p>
-        <p style="font-size:12px;color:#999;margin-top:8px;">(Aggie mascot profile)</p>
+        <p style="font-size:13px;color:#999;margin-top:10px;">(Aggie mascot profile)</p>
       </div>
       
       <div class="step">
         <div class="step-number">4</div>
         <h3>START PLAYING</h3>
-        <p>Once verified, you'll have full server access</p>
+        <p>Once verified, you'll have full server access!</p>
       </div>
     </div>
   </section>
@@ -873,18 +1096,19 @@
   <!-- Leaderboard -->
   <section class="card card-dark">
     <h2 class="font-pixel">TOP PLAYERS</h2>
-    <p style="text-align:center;color:#999;margin-bottom:30px;">Most active players this month</p>
+    <p style="text-align:center;color:#aaa;margin-bottom:35px;font-size:15px;">Most active players this month</p>
     
     <div id="leaderboardContainer">
-      <div style="text-align:center;padding:40px;">
+      <div style="text-align:center;padding:50px;">
         <div class="spinner"></div>
-        <p style="color:#999;margin-top:20px;">Loading player stats...</p>
+        <p style="color:#999;margin-top:25px;font-size:15px;">Loading player stats...</p>
       </div>
     </div>
     
-    <div style="text-align:center;margin-top:30px;">
+    <div style="text-align:center;margin-top:35px;">
       <button onclick="updateLeaderboard()" class="btn btn-primary">
-        <i class="fas fa-sync-alt"></i> REFRESH STATS
+        <i class="fas fa-sync-alt"></i>
+        <span>REFRESH STATS</span>
       </button>
     </div>
   </section>
@@ -892,15 +1116,16 @@
   <!-- Gallery -->
   <section class="card">
     <h2 class="font-pixel">COMMUNITY GALLERY</h2>
-    <p style="text-align:center;color:#666;margin-bottom:30px;">Amazing builds by our players</p>
+    <p style="text-align:center;color:#666;margin-bottom:35px;font-size:15px;">Amazing builds by our players</p>
     
     <div class="gallery" id="galleryContainer">
       <!-- Gallery items loaded dynamically -->
     </div>
     
-    <div style="text-align:center;margin-top:30px;">
+    <div style="text-align:center;margin-top:35px;">
       <button onclick="showSubmissionInfo()" class="btn btn-primary">
-        <i class="fas fa-upload"></i> SUBMIT YOUR BUILD
+        <i class="fas fa-upload"></i>
+        <span>SUBMIT YOUR BUILD</span>
       </button>
     </div>
   </section>
@@ -909,14 +1134,14 @@
 
 <!-- Footer -->
 <footer>
-  <p class="font-pixel">© 2025-2026 UC MINECRAFT</p>
-  <p>Server Status: <span id="footerStatus">Checking...</span></p>
-  <p style="font-size:14px;color:#999;margin-top:10px;">Made by the UC Community</p>
+  <p class="font-pixel" style="font-size:14px;margin-bottom:15px;">© 2025-2026 UC MINECRAFT</p>
+  <p style="font-size:15px;">Server Status: <span id="footerStatus" style="font-weight:600;">Checking...</span></p>
+  <p style="font-size:14px;color:#999;margin-top:15px;">Made with ❤️ by the UC Community</p>
 </footer>
 
 <script>
 // ============================================
-// IMPROVED SERVER STATUS CHECKING
+// SERVER STATUS CHECKING
 // ============================================
 
 let serverStatus = {
@@ -930,18 +1155,12 @@ const SERVER_IP = 'ucminecraft.artisen.xyz';
 const JAVA_PORT = 25565;
 const BEDROCK_PORT = 19133;
 
-// Cache to prevent unnecessary API calls
 let lastStatusCheck = 0;
-const STATUS_CACHE_TIME = 15000; // 15 seconds cache
-
-// Track if we're currently checking to avoid multiple simultaneous checks
+const STATUS_CACHE_TIME = 15000;
 let isChecking = false;
 
-// Simple fallback - try direct connection test first
 async function testDirectConnection() {
   try {
-    // Create a simple WebSocket test for the server (won't actually connect, just tests)
-    // This is a faster method than API calls
     const testUrl = `https://api.minetools.eu/ping/${SERVER_IP}/${JAVA_PORT}`;
     
     const controller = new AbortController();
@@ -973,9 +1192,7 @@ async function testDirectConnection() {
   return null;
 }
 
-// Try multiple methods to check server status
 async function checkServerStatusImproved() {
-  // Don't check if we're already checking or if cache is valid
   if (isChecking || (Date.now() - lastStatusCheck < STATUS_CACHE_TIME && lastStatusCheck !== 0)) {
     return serverStatus;
   }
@@ -983,11 +1200,9 @@ async function checkServerStatusImproved() {
   isChecking = true;
   lastStatusCheck = Date.now();
   
-  // Set loading state immediately
   updateUIWithLoading();
   
   try {
-    // Method 1: Direct connection test (fastest)
     const directResult = await testDirectConnection();
     if (directResult) {
       serverStatus = directResult;
@@ -995,16 +1210,13 @@ async function checkServerStatusImproved() {
       return serverStatus;
     }
     
-    // Method 2: Try multiple API endpoints
     const endpoints = [
       `https://api.mcsrvstat.us/2/${SERVER_IP}`,
       `https://api.mcstatus.io/v2/status/java/${SERVER_IP}`,
       `https://api.minetools.eu/query/${SERVER_IP}/${JAVA_PORT}`,
-      // Also try Bedrock port
       `https://api.minetools.eu/ping/${SERVER_IP}/${BEDROCK_PORT}`
     ];
     
-    // Try endpoints in parallel for fastest response
     const promises = endpoints.map(endpoint => 
       fetch(endpoint, {
         mode: 'cors',
@@ -1013,7 +1225,6 @@ async function checkServerStatusImproved() {
       }).then(res => res.ok ? res.json() : null).catch(() => null)
     );
     
-    // Wait for first successful response
     for (const promise of promises) {
       try {
         const data = await Promise.race([
@@ -1022,7 +1233,6 @@ async function checkServerStatusImproved() {
         ]);
         
         if (data) {
-          // Parse different API responses
           if (data.online !== undefined) {
             serverStatus = {
               online: data.online,
@@ -1046,9 +1256,7 @@ async function checkServerStatusImproved() {
       }
     }
     
-    // If all endpoints failed, assume server might be online but API unreachable
     if (!serverStatus.online) {
-      // Set a default online state for now
       serverStatus = {
         online: true,
         players: 0,
@@ -1059,7 +1267,6 @@ async function checkServerStatusImproved() {
     
   } catch (error) {
     console.error('Server status check failed:', error);
-    // Keep last known status or set to online by default
     serverStatus.online = true;
   } finally {
     isChecking = false;
@@ -1068,7 +1275,6 @@ async function checkServerStatusImproved() {
   return serverStatus;
 }
 
-// Update UI with loading state
 function updateUIWithLoading() {
   const statusDot = document.getElementById('statusDot');
   const statusText = document.getElementById('statusText');
@@ -1079,7 +1285,6 @@ function updateUIWithLoading() {
   if (playerCount) playerCount.innerHTML = '<div class="spinner"></div>';
 }
 
-// Update UI with server status
 function updateUIWithStatus() {
   const statusDot = document.getElementById('statusDot');
   const statusText = document.getElementById('statusText');
@@ -1110,7 +1315,6 @@ async function updateServerStatus() {
     await checkServerStatusImproved();
     updateUIWithStatus();
     
-    // Show a toast if we just came back online
     if (serverStatus.online && serverStatus.players > 0) {
       showToast(`Server is online with ${serverStatus.players} players!`);
     }
@@ -1133,12 +1337,14 @@ function closeVerificationModal() {
 
 function copyServerIP() {
   navigator.clipboard.writeText('ucminecraft.artisen.xyz').then(() => {
-    showToast('Server IP copied to clipboard!');
+    showToast('✓ Server IP copied to clipboard!');
+  }).catch(() => {
+    showToast('Failed to copy. Please copy manually: ucminecraft.artisen.xyz');
   });
 }
 
 function showSubmissionInfo() {
-  alert('TO SUBMIT YOUR BUILD:\n\n1. Take screenshots of your creation\n2. Upload to imgur or similar\n3. Send link to admins on Discord\n4. Include your Minecraft username\n\nAdmins will add approved builds to gallery!');
+  showToast('TO SUBMIT YOUR BUILD:\n\n1. Take screenshots of your creation\n2. Upload to imgur or similar\n3. Send link to admins on Discord\n4. Include your Minecraft username\n\nAdmins will add approved builds to gallery!');
 }
 
 function showToast(message) {
@@ -1148,18 +1354,21 @@ function showToast(message) {
   const toast = document.createElement('div');
   toast.id = 'toast';
   toast.className = 'toast font-pixel';
+  toast.style.fontSize = '12px';
+  toast.style.lineHeight = '1.6';
   toast.textContent = message;
   document.body.appendChild(toast);
   
   setTimeout(() => {
     if (toast.parentNode) {
-      toast.parentNode.removeChild(toast);
+      toast.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => toast.parentNode.removeChild(toast), 300);
     }
-  }, 3000);
+  }, 5000);
 }
 
 // ============================================
-// LEADERBOARD & GALLERY (Placeholder)
+// LEADERBOARD & GALLERY
 // ============================================
 
 const playerData = [];
@@ -1170,16 +1379,16 @@ function updateLeaderboard() {
   
   if (playerData.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center;padding:60px 20px;">
-        <i class="fas fa-users" style="font-size:60px;color:#666;margin-bottom:20px;"></i>
-        <h3 style="color:#999;font-size:20px;margin-bottom:10px;">NO PLAYERS YET</h3>
-        <p style="color:#666;">Be the first to join and get verified!</p>
+      <div style="text-align:center;padding:70px 20px;">
+        <i class="fas fa-users" style="font-size:70px;color:#666;margin-bottom:25px;"></i>
+        <h3 style="color:#aaa;font-size:22px;margin-bottom:12px;font-weight:700;">NO PLAYERS YET</h3>
+        <p style="color:#777;font-size:15px;">Be the first to join and get verified!</p>
       </div>
     `;
     return;
   }
   
-  showToast('Leaderboard updated!');
+  showToast('✓ Leaderboard updated!');
 }
 
 function loadGallery() {
@@ -1187,10 +1396,10 @@ function loadGallery() {
   
   if (galleryData.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center;padding:60px 20px;grid-column:1/-1;">
-        <i class="fas fa-camera" style="font-size:60px;color:#666;margin-bottom:20px;"></i>
-        <h3 style="color:#999;font-size:20px;margin-bottom:10px;">NO BUILDS YET</h3>
-        <p style="color:#666;">Be the first to submit your amazing creation!</p>
+      <div style="text-align:center;padding:70px 20px;grid-column:1/-1;">
+        <i class="fas fa-camera" style="font-size:70px;color:#666;margin-bottom:25px;"></i>
+        <h3 style="color:#999;font-size:22px;margin-bottom:12px;font-weight:700;">NO BUILDS YET</h3>
+        <p style="color:#666;font-size:15px;">Be the first to submit your amazing creation!</p>
       </div>
     `;
     return;
@@ -1204,17 +1413,12 @@ function loadGallery() {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('UC Minecraft website loaded!');
   
-  // Update server status immediately
   updateServerStatus();
-  
-  // Update leaderboard and gallery
   updateLeaderboard();
   loadGallery();
   
-  // Update server status every 30 seconds
   setInterval(updateServerStatus, 30000);
   
-  // Also update when user returns to the tab
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
       updateServerStatus();
@@ -1222,11 +1426,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Manual server check button (add this to your HTML if needed)
-function manualServerCheck() {
-  showToast('Checking server status...');
-  updateServerStatus();
-}
+// Close modal on background click
+document.getElementById('verificationModal')?.addEventListener('click', (e) => {
+  if (e.target.id === 'verificationModal') {
+    closeVerificationModal();
+  }
+});
 </script>
 
 </body>
