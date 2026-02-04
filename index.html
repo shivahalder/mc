@@ -21,7 +21,7 @@
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://ucminecraft.artisen.xyz/">
-  <meta property="twitter:title" content="University of California Minecraft Server">
+  <meta property="twitter:title" content="UC Minecraft Server - Beach Party Edition">
   <meta property="twitter:description" content="Join the official UC Minecraft SMP server! Beach Party Edition - A community server for everyone.">
   <meta property="twitter:image" content="https://ucminecraft.artisen.xyz/og-image.png">
   
@@ -104,36 +104,149 @@
     }
 
     .logo {
-      width: 110px;
-      height: 110px;
-      background: linear-gradient(135deg, var(--uc-gold), #e6a000);
-      border: 4px solid var(--uc-blue);
-      border-radius: 16px;
+      width: 120px;
+      height: 120px;
       position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
     }
 
-    .logo-inner {
+    /* Minecraft grass block style logo */
+    .logo-block {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(-25deg) rotateY(35deg);
+    }
+
+    .logo-face {
       position: absolute;
-      top: 22px;
-      left: 22px;
-      right: 22px;
-      bottom: 22px;
-      background: linear-gradient(135deg, var(--uc-blue), #00509E);
-      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      border: 3px solid rgba(0,0,0,0.2);
+      box-sizing: border-box;
+    }
+
+    /* Top face - grass */
+    .logo-face.top {
+      background: linear-gradient(135deg, #55aa55 0%, #4a9c4a 100%);
+      transform: rotateX(90deg) translateZ(60px);
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
-    .logo-inner:before {
-      content: "UC";
+    .logo-face.top::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+        linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.3;
+    }
+
+    /* Front face - UC Logo */
+    .logo-face.front {
+      background: linear-gradient(135deg, var(--uc-blue) 0%, #00509E 100%);
+      transform: translateZ(60px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-face.front::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 12px 12px;
+    }
+
+    .logo-text {
       font-family: 'Press Start 2P', cursive;
-      font-size: 26px;
+      font-size: 32px;
       color: var(--uc-gold);
       font-weight: bold;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      text-shadow: 
+        3px 3px 0px rgba(0,0,0,0.3),
+        0 0 20px rgba(253, 181, 21, 0.5);
+      z-index: 1;
+      letter-spacing: 2px;
+    }
+
+    /* Right face - dirt/side */
+    .logo-face.right {
+      background: linear-gradient(135deg, #8B6F47 0%, #6B5638 100%);
+      transform: rotateY(90deg) translateZ(60px);
+    }
+
+    .logo-face.right::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+        linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+      background-size: 15px 15px;
+      opacity: 0.4;
+    }
+
+    /* Left face */
+    .logo-face.left {
+      background: linear-gradient(135deg, #7a5c3a 0%, #5a4428 100%);
+      transform: rotateY(-90deg) translateZ(60px);
+    }
+
+    /* Bottom face */
+    .logo-face.bottom {
+      background: linear-gradient(135deg, #654321 0%, #4a3219 100%);
+      transform: rotateX(-90deg) translateZ(60px);
+    }
+
+    /* Back face */
+    .logo-face.back {
+      background: linear-gradient(135deg, #003262 0%, #002147 100%);
+      transform: translateZ(-60px) rotateY(180deg);
+    }
+
+    /* Hover animation for logo */
+    .logo-block {
+      animation: logoFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% {
+        transform: rotateX(-25deg) rotateY(35deg) translateY(0px);
+      }
+      50% {
+        transform: rotateX(-25deg) rotateY(35deg) translateY(-10px);
+      }
+    }
+
+    .logo-container:hover .logo-block {
+      animation: logoSpin 4s ease-in-out infinite;
+    }
+
+    @keyframes logoSpin {
+      0% {
+        transform: rotateX(-25deg) rotateY(35deg);
+      }
+      50% {
+        transform: rotateX(-25deg) rotateY(395deg);
+      }
+      100% {
+        transform: rotateX(-25deg) rotateY(35deg);
+      }
     }
 
     .title-group h1 {
@@ -890,8 +1003,12 @@
       }
       
       .logo {
-        width: 90px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
+      }
+
+      .logo-text {
+        font-size: 26px;
       }
       
       .card {
@@ -1006,7 +1123,16 @@
   <header class="header">
     <div class="logo-container">
       <div class="logo">
-        <div class="logo-inner"></div>
+        <div class="logo-block">
+          <div class="logo-face top"></div>
+          <div class="logo-face front">
+            <div class="logo-text">UC</div>
+          </div>
+          <div class="logo-face right"></div>
+          <div class="logo-face left"></div>
+          <div class="logo-face bottom"></div>
+          <div class="logo-face back"></div>
+        </div>
       </div>
       <div class="title-group font-pixel">
         <h1>UC MINECRAFT</h1>
@@ -1344,7 +1470,7 @@ function copyServerIP() {
 }
 
 function showSubmissionInfo() {
-  showToast('TO SUBMIT YOUR BUILD:\n\n1. Take screenshots of your creation\n2. Upload to the support channel on Discord\n3. I'll review and forward the picture to admins\n4. Include your Minecraft username\n\nAdmins will add approved builds to the gallery!');
+  showToast('TO SUBMIT YOUR BUILD:\n\n1. Take screenshots of your creation\n2. Upload to imgur or similar\n3. Send link to admins on Discord\n4. Include your Minecraft username\n\nAdmins will add approved builds to gallery!');
 }
 
 function showToast(message) {
