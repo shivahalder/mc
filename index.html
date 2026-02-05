@@ -779,6 +779,12 @@
       height: 220px;
       object-fit: cover;
       border-bottom: 4px solid var(--uc-gold);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-img:hover {
+      transform: scale(1.05);
     }
 
     .gallery-info {
@@ -834,6 +840,94 @@
       box-shadow: var(--shadow-xl);
       animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    /* ============================================
+       LIGHTBOX MODAL (for gallery images)
+    ============================================ */
+    .lightbox-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+    }
+
+    .lightbox-modal.hidden {
+      display: none;
+    }
+
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+      animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .lightbox-image {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: var(--shadow-xl);
+      border: 4px solid var(--uc-gold);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      background: var(--uc-gold);
+      color: var(--uc-blue);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .lightbox-close:hover {
+      background: white;
+      transform: rotate(90deg) scale(1.1);
+    }
+
+    .lightbox-info {
+      position: absolute;
+      bottom: -60px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+    }
+
+    .lightbox-info h3 {
+      font-size: 24px;
+      color: var(--uc-gold);
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .lightbox-info p {
+      font-size: 16px;
+      color: #ddd;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }
+
+    /* ============================================
+       MODAL (verification)
+    ============================================ */
 
     @keyframes modalSlideIn {
       from {
@@ -1113,6 +1207,18 @@
     <button onclick="closeVerificationModal()" class="btn btn-primary" style="width:100%;margin-top:25px;justify-content:center;">
       <span>UNDERSTOOD</span>
     </button>
+  </div>
+</div>
+
+<!-- Lightbox Modal for Gallery Images -->
+<div id="lightboxModal" class="lightbox-modal hidden" onclick="closeLightbox()">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightboxImage" class="lightbox-image" src="" alt="">
+    <div class="lightbox-info">
+      <h3 id="lightboxTitle"></h3>
+      <p id="lightboxBuilder"></p>
+    </div>
   </div>
 </div>
 
@@ -1502,7 +1608,7 @@ const galleryData = [
   {
     title: "Dreamcatcher",
     builder: "yumihan",
-    image: "https://imgur.com/a/kgdnLB5",
+    image: "yumihan.png",
     date: "Feb 2026"
   }
 ];
@@ -1539,9 +1645,9 @@ function loadGallery() {
   }
   
   // Generate gallery items
-  container.innerHTML = galleryData.map(item => `
+  container.innerHTML = galleryData.map((item, index) => `
     <div class="gallery-item">
-      <img src="${item.image}" alt="${item.title}" class="gallery-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22 x=%22150%22 y=%22150%22%3EImage Error%3C/text%3E%3C/svg%3E'">
+      <img src="${item.image}" alt="${item.title}" class="gallery-img" onclick="openLightbox(${index})" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22 x=%22150%22 y=%22150%22%3EImage Error%3C/text%3E%3C/svg%3E'">
       <div class="gallery-info">
         <div class="gallery-title">${item.title}</div>
         <div class="gallery-meta">
@@ -1551,6 +1657,32 @@ function loadGallery() {
       </div>
     </div>
   `).join('');
+}
+
+// ============================================
+// LIGHTBOX FUNCTIONS
+// ============================================
+
+function openLightbox(index) {
+  const item = galleryData[index];
+  const modal = document.getElementById('lightboxModal');
+  const image = document.getElementById('lightboxImage');
+  const title = document.getElementById('lightboxTitle');
+  const builder = document.getElementById('lightboxBuilder');
+  
+  image.src = item.image;
+  image.alt = item.title;
+  title.textContent = item.title;
+  builder.textContent = `Built by ${item.builder} • ${item.date}`;
+  
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  const modal = document.getElementById('lightboxModal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = '';
 }
 
 // ============================================
@@ -1576,6 +1708,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // Close modal on background click
 document.getElementById('verificationModal')?.addEventListener('click', (e) => {
   if (e.target.id === 'verificationModal') {
+    closeVerificationModal();
+  }
+});
+
+// Close lightbox with ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeLightbox();
     closeVerificationModal();
   }
 });
