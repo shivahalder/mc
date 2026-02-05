@@ -1498,7 +1498,14 @@ function showToast(message) {
 // ============================================
 
 const playerData = [];
-const galleryData = [];
+const galleryData = [
+  {
+    title: "Dreamcatcher",
+    builder: "yumihan",
+    image: "https://i.imgur.com/kgdnLB5.png",
+    date: "Feb 2026"
+  }
+];
 
 function updateLeaderboard() {
   const container = document.getElementById('leaderboardContainer');
@@ -1530,6 +1537,20 @@ function loadGallery() {
     `;
     return;
   }
+  
+  // Generate gallery items
+  container.innerHTML = galleryData.map(item => `
+    <div class="gallery-item">
+      <img src="${item.image}" alt="${item.title}" class="gallery-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22 x=%22150%22 y=%22150%22%3EImage Error%3C/text%3E%3C/svg%3E'">
+      <div class="gallery-info">
+        <div class="gallery-title">${item.title}</div>
+        <div class="gallery-meta">
+          <span><i class="fas fa-user"></i> ${item.builder}</span>
+          <span><i class="fas fa-calendar"></i> ${item.date}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
 // ============================================
