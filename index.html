@@ -15,21 +15,12 @@
   <meta property="og:title" content="University of California Minecraft">
   <meta property="og:description" content="Join the official UC Minecraft SMP server! - A community server for everyone. Connect now at ucminecraft.artisen.xyz">
   <meta property="og:image" content="https://ucminecraft.artisen.xyz/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://ucminecraft.artisen.xyz/">
-  <meta property="twitter:title" content="University of California Minecraft">
-  <meta property="twitter:description" content="Join the official UC Minecraft SMP server! - A community server for everyone.">
-  <meta property="twitter:image" content="https://ucminecraft.artisen.xyz/og-image.png">
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
   
   <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -40,1016 +31,810 @@
     }
 
     :root {
+      --mc-grass-top: #7cbd6b;
+      --mc-grass-side: #5b9a4a;
+      --mc-dirt: #8b6f47;
+      --mc-stone: #7d7d7d;
+      --mc-wood: #9c7f4f;
+      --mc-gold: #fcee4b;
+      --mc-diamond: #5decf5;
       --uc-blue: #003262;
       --uc-gold: #FDB515;
-      --deep-ocean: #005a7d;
-      --sand-light: #f4e4bc;
-      --sand-dark: #d2b48c;
-      --minecraft-green: #55aa55;
-      --minecraft-dark: #2d2d2d;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
-      --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
-      --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
-      --shadow-xl: 0 12px 32px rgba(0,0,0,0.18);
+      --text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 50%, #F4A460 50.1%, #DEB887 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
-      color: #1a1a1a;
+      font-family: 'Press Start 2P', cursive;
+      background: #87CEEB;
+      color: #fff;
       overflow-x: hidden;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.8;
+      position: relative;
+      min-height: 100vh;
     }
 
-    .font-pixel {
-      font-family: 'Press Start 2P', cursive;
-      line-height: 1.6;
+    /* Minecraft-style pixelated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(180deg, 
+          #87CEEB 0%, 
+          #87CEEB 60%,
+          var(--mc-grass-side) 60%,
+          var(--mc-grass-side) 65%,
+          var(--mc-dirt) 65%,
+          var(--mc-dirt) 100%
+        );
+      z-index: -2;
+    }
+
+    /* Clouds floating animation */
+    .clouds {
+      position: fixed;
+      top: 5%;
+      left: 0;
+      width: 100%;
+      height: 300px;
+      z-index: -1;
+      opacity: 0.6;
+      animation: cloudFloat 120s linear infinite;
+    }
+
+    @keyframes cloudFloat {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .cloud {
+      position: absolute;
+      background: white;
+      width: 100px;
+      height: 40px;
+      box-shadow: 
+        40px 0 0 white,
+        80px 0 0 white,
+        120px 0 0 white,
+        0 -20px 0 white,
+        40px -20px 0 white,
+        80px -20px 0 white;
     }
 
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 20px;
     }
 
     /* ============================================
-       HEADER & LOGO
+       MINECRAFT BLOCK STYLING
+    ============================================ */
+    .mc-block {
+      background: var(--mc-grass-top);
+      border: 4px solid #000;
+      box-shadow: 
+        inset 4px 4px 0 rgba(255,255,255,0.3),
+        inset -4px -4px 0 rgba(0,0,0,0.3),
+        0 8px 0 rgba(0,0,0,0.5);
+      image-rendering: pixelated;
+      position: relative;
+    }
+
+    .mc-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(0,0,0,0.1) 8px, rgba(0,0,0,0.1) 16px),
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(0,0,0,0.1) 8px, rgba(0,0,0,0.1) 16px);
+      pointer-events: none;
+    }
+
+    /* ============================================
+       HEADER WITH ANIMATED LOGO
     ============================================ */
     .header {
       text-align: center;
-      padding: 50px 20px 40px;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+    }
+
+    .logo-3d {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 30px;
       position: relative;
+      transform-style: preserve-3d;
+      animation: float 3s ease-in-out infinite;
     }
 
-    .logo-container {
-      display: inline-flex;
-      align-items: center;
-      gap: 30px;
-      background: rgba(255,255,255,0.98);
-      padding: 30px 60px;
-      border-radius: 24px;
-      box-shadow: var(--shadow-xl);
-      margin-bottom: 50px;
-      border: 4px solid var(--uc-blue);
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s ease;
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotateY(0deg); }
+      50% { transform: translateY(-20px) rotateY(180deg); }
     }
 
-    .logo-container:hover {
-      transform: translateY(-5px);
-    }
-
-    .logo {
-      width: 120px;
-      height: 120px;
-      position: relative;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
-    }
-
-    /* Minecraft grass block style logo */
-    .logo-block {
+    .logo-cube {
       width: 100%;
       height: 100%;
       position: relative;
       transform-style: preserve-3d;
-      transform: rotateX(-25deg) rotateY(35deg);
+      transform: rotateX(-20deg) rotateY(30deg);
     }
 
-    .logo-face {
+    .logo-cube-face {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      border: 3px solid rgba(0,0,0,0.2);
-      box-sizing: border-box;
-    }
-
-    /* Top face - grass */
-    .logo-face.top {
-      background: linear-gradient(135deg, #55aa55 0%, #4a9c4a 100%);
-      transform: rotateX(90deg) translateZ(60px);
+      width: 200px;
+      height: 200px;
+      border: 4px solid #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-    }
-
-    .logo-face.top::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
-        linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-      opacity: 0.3;
-    }
-
-    /* Front face - UC Logo */
-    .logo-face.front {
-      background: linear-gradient(135deg, var(--uc-blue) 0%, #00509E 100%);
-      transform: translateZ(60px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .logo-face.front::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
-        linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
-      background-size: 12px 12px;
-    }
-
-    .logo-text {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 32px;
-      color: var(--uc-gold);
+      font-size: 80px;
       font-weight: bold;
-      text-shadow: 
-        3px 3px 0px rgba(0,0,0,0.3),
-        0 0 20px rgba(253, 181, 21, 0.5);
-      z-index: 1;
-      letter-spacing: 2px;
+      text-shadow: var(--text-shadow);
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
     }
 
-    /* Right face - dirt/side */
-    .logo-face.right {
-      background: linear-gradient(135deg, #8B6F47 0%, #6B5638 100%);
-      transform: rotateY(90deg) translateZ(60px);
-    }
-
-    .logo-face.right::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
-        linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
-      background-size: 15px 15px;
-      opacity: 0.4;
-    }
-
-    /* Left face */
-    .logo-face.left {
-      background: linear-gradient(135deg, #7a5c3a 0%, #5a4428 100%);
-      transform: rotateY(-90deg) translateZ(60px);
-    }
-
-    /* Bottom face */
-    .logo-face.bottom {
-      background: linear-gradient(135deg, #654321 0%, #4a3219 100%);
-      transform: rotateX(-90deg) translateZ(60px);
-    }
-
-    /* Back face */
-    .logo-face.back {
-      background: linear-gradient(135deg, #003262 0%, #002147 100%);
-      transform: translateZ(-60px) rotateY(180deg);
-    }
-
-    /* Hover animation for logo */
-    .logo-block {
-      animation: logoFloat 6s ease-in-out infinite;
-    }
-
-    @keyframes logoFloat {
-      0%, 100% {
-        transform: rotateX(-25deg) rotateY(35deg) translateY(0px);
-      }
-      50% {
-        transform: rotateX(-25deg) rotateY(35deg) translateY(-10px);
-      }
-    }
-
-    .logo-container:hover .logo-block {
-      animation: logoSpin 4s ease-in-out infinite;
-    }
-
-    @keyframes logoSpin {
-      0% {
-        transform: rotateX(-25deg) rotateY(35deg);
-      }
-      50% {
-        transform: rotateX(-25deg) rotateY(395deg);
-      }
-      100% {
-        transform: rotateX(-25deg) rotateY(35deg);
-      }
-    }
-
-    .title-group h1 {
-      font-size: 52px;
-      color: var(--uc-blue);
-      margin-bottom: 10px;
-      text-shadow: 3px 3px 0px var(--uc-gold), 5px 5px 10px rgba(0,0,0,0.1);
-      letter-spacing: 2px;
-    }
-
-    .title-group p {
-      font-size: 19px;
+    .logo-cube-face.front {
+      background: linear-gradient(135deg, var(--uc-blue) 0%, #00509E 100%);
+      transform: translateZ(100px);
       color: var(--uc-gold);
-      font-weight: 800;
-      text-transform: uppercase;
+    }
+
+    .logo-cube-face.back {
+      background: linear-gradient(135deg, var(--mc-grass-top) 0%, var(--mc-grass-side) 100%);
+      transform: translateZ(-100px) rotateY(180deg);
+    }
+
+    .logo-cube-face.right {
+      background: linear-gradient(135deg, var(--mc-dirt) 0%, #6b5638 100%);
+      transform: rotateY(90deg) translateZ(100px);
+    }
+
+    .logo-cube-face.left {
+      background: linear-gradient(135deg, var(--mc-dirt) 0%, #6b5638 100%);
+      transform: rotateY(-90deg) translateZ(100px);
+    }
+
+    .logo-cube-face.top {
+      background: linear-gradient(135deg, var(--mc-grass-top) 0%, var(--mc-grass-side) 100%);
+      transform: rotateX(90deg) translateZ(100px);
+    }
+
+    .logo-cube-face.bottom {
+      background: linear-gradient(135deg, var(--mc-dirt) 0%, #4a3219 100%);
+      transform: rotateX(-90deg) translateZ(100px);
+    }
+
+    .main-title {
+      font-size: 48px;
+      color: var(--uc-gold);
+      text-shadow: 
+        4px 4px 0 var(--uc-blue),
+        6px 6px 0 #000;
+      margin-bottom: 15px;
       letter-spacing: 3px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      animation: titleGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0%, 100% { text-shadow: 4px 4px 0 var(--uc-blue), 6px 6px 0 #000; }
+      50% { text-shadow: 4px 4px 0 var(--uc-blue), 6px 6px 0 #000, 0 0 20px var(--uc-gold); }
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #fff;
+      text-shadow: var(--text-shadow);
+      letter-spacing: 2px;
     }
 
     /* ============================================
        SERVER STATUS CARD
     ============================================ */
     .status-card {
-      background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.92));
-      border: 4px solid var(--uc-gold);
-      border-radius: 20px;
-      padding: 35px;
-      max-width: 550px;
-      margin: 0 auto 50px;
-      color: white;
-      box-shadow: var(--shadow-xl), 0 0 0 1px rgba(253, 181, 21, 0.2);
-      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.8);
+      border: 6px solid var(--uc-gold);
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 600px;
+      box-shadow: 
+        0 10px 0 rgba(0,0,0,0.5),
+        inset 0 0 20px rgba(253,181,21,0.2);
       position: relative;
-      overflow: hidden;
     }
 
     .status-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--uc-gold), var(--uc-blue), var(--uc-gold));
-      background-size: 200% 100%;
-      animation: shimmer 3s linear infinite;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background: linear-gradient(45deg, var(--uc-gold), var(--uc-blue), var(--uc-gold));
+      z-index: -1;
+      filter: blur(10px);
+      opacity: 0.5;
+      animation: borderGlow 3s ease-in-out infinite;
     }
 
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
     }
 
-    .status-header {
+    .status-indicator {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 15px;
       margin-bottom: 20px;
+      font-size: 14px;
     }
 
     .status-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
+      width: 20px;
+      height: 20px;
       background: #10B981;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
-      animation: pulse 2s ease-in-out infinite;
+      border: 3px solid #000;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 15px #10B981;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
     }
 
     .status-dot.offline {
       background: #EF4444;
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+      box-shadow: 0 0 15px #EF4444;
       animation: none;
     }
 
-    .status-dot.loading {
-      background: #F59E0B;
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
-    }
-
-    @keyframes pulse {
-      0%, 100% { 
-        opacity: 1; 
-        transform: scale(1); 
-      }
-      50% { 
-        opacity: 0.6; 
-        transform: scale(0.9); 
-      }
-    }
-
-    .player-count {
-      font-size: 64px;
-      text-align: center;
+    .player-count-display {
+      font-size: 72px;
       color: var(--uc-gold);
-      margin: 20px 0;
-      font-family: 'Press Start 2P', cursive;
-      text-shadow: 0 0 20px rgba(253, 181, 21, 0.4), 0 4px 8px rgba(0,0,0,0.3);
-      letter-spacing: 4px;
+      text-align: center;
+      margin: 25px 0;
+      text-shadow: 
+        4px 4px 0 rgba(0,0,0,0.5),
+        0 0 30px var(--uc-gold);
+      letter-spacing: 5px;
     }
 
-    .server-ip {
-      background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
-      padding: 24px;
-      border-radius: 12px;
-      text-align: center;
-      margin-top: 25px;
-      border: 2px solid #2a2a2a;
+    .server-ip-box {
+      background: #000;
+      border: 4px solid var(--mc-gold);
+      padding: 20px;
+      margin-top: 20px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
       position: relative;
       overflow: hidden;
     }
 
-    .server-ip::before {
-      content: '';
+    .server-ip-box::before {
+      content: 'CLICK TO COPY';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .server-ip:hover::before {
-      left: 100%;
-    }
-
-    .server-ip:hover {
-      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-      transform: scale(1.02);
-      border-color: var(--uc-gold);
-    }
-
-    .server-ip code {
-      color: #10B981;
-      font-size: 22px;
-      font-weight: 700;
-      font-family: 'Monaco', 'Courier New', monospace;
-      letter-spacing: 1px;
-    }
-
-    /* ============================================
-       ACTION BUTTONS
-    ============================================ */
-    .action-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      justify-content: center;
-      margin: 40px 0;
-    }
-
-    .btn {
-      padding: 20px 40px;
-      border: none;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-      letter-spacing: 0.5px;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .btn:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: var(--shadow-xl);
-    }
-
-    .btn:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .btn i {
-      font-size: 18px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .btn span {
-      position: relative;
-      z-index: 1;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--uc-blue), #00509E);
-      color: white;
-    }
-
-    .btn-discord {
-      background: linear-gradient(135deg, #5865F2, #4752c4);
-      color: white;
-    }
-
-    .btn-instagram {
-      background: linear-gradient(135deg, #833AB4, #E1306C, #FD8D32);
-      color: white;
-    }
-
-    .btn-success {
-      background: linear-gradient(135deg, #10B981, #059669);
-      color: white;
-    }
-
-    /* ============================================
-       CARDS
-    ============================================ */
-    .card {
-      background: rgba(255,255,255,0.98);
-      border-radius: 24px;
-      padding: 50px;
-      margin-bottom: 50px;
-      box-shadow: var(--shadow-xl);
-      border: 3px solid rgba(253, 181, 21, 0.3);
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card-dark {
-      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-      color: white;
-      border-color: rgba(253, 181, 21, 0.5);
-    }
-
-    .card h2 {
-      font-size: 40px;
-      color: var(--uc-blue);
-      margin-bottom: 30px;
-      text-align: center;
-      position: relative;
-      padding-bottom: 20px;
-    }
-
-    .card-dark h2 {
-      color: var(--uc-gold);
-      text-shadow: 0 0 20px rgba(253, 181, 21, 0.3);
-    }
-
-    .card h2:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
+      top: -30px;
       left: 50%;
       transform: translateX(-50%);
-      width: 120px;
-      height: 5px;
-      background: linear-gradient(90deg, transparent, var(--uc-gold), transparent);
-      border-radius: 3px;
-    }
-
-    /* ============================================
-       HOW TO JOIN STEPS
-    ============================================ */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-
-    .step {
-      text-align: center;
-      padding: 35px 25px;
-      background: linear-gradient(135deg, #ffffff, #f8f9fa);
-      border-radius: 20px;
-      border: 3px solid var(--uc-gold);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .step::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, var(--uc-blue), var(--uc-gold), var(--uc-blue));
+      background: var(--mc-gold);
+      color: #000;
+      padding: 5px 15px;
+      font-size: 10px;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: all 0.3s;
+      white-space: nowrap;
     }
 
-    .step:hover::before {
+    .server-ip-box:hover::before {
+      top: -35px;
       opacity: 1;
     }
 
-    .step:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: var(--shadow-xl);
-      border-color: var(--uc-blue);
+    .server-ip-box:hover {
+      background: #1a1a1a;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.5);
     }
 
-    .step-number {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, var(--uc-blue), #00509E);
-      color: white;
-      border-radius: 50%;
+    .server-ip-box code {
+      color: #10B981;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    /* ============================================
+       MINECRAFT BUTTONS
+    ============================================ */
+    .btn-row {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
       justify-content: center;
-      font-size: 32px;
-      font-weight: 800;
-      margin: 0 auto 25px;
-      box-shadow: var(--shadow-md);
+      margin: 30px 0;
+    }
+
+    .mc-btn {
+      background: var(--mc-grass-top);
+      border: 4px solid #000;
+      color: #fff;
+      padding: 15px 30px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 
+        0 6px 0 rgba(0,0,0,0.5),
+        inset 2px 2px 0 rgba(255,255,255,0.3),
+        inset -2px -2px 0 rgba(0,0,0,0.3);
+      transition: all 0.1s;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
       position: relative;
     }
 
-    .step-number::after {
+    .mc-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 9px 0 rgba(0,0,0,0.5),
+        inset 2px 2px 0 rgba(255,255,255,0.4),
+        inset -2px -2px 0 rgba(0,0,0,0.3);
+    }
+
+    .mc-btn:active {
+      transform: translateY(3px);
+      box-shadow: 
+        0 3px 0 rgba(0,0,0,0.5),
+        inset 2px 2px 0 rgba(255,255,255,0.2),
+        inset -2px -2px 0 rgba(0,0,0,0.4);
+    }
+
+    .mc-btn.btn-diamond {
+      background: var(--mc-diamond);
+      color: #000;
+    }
+
+    .mc-btn.btn-gold {
+      background: var(--uc-gold);
+      color: var(--uc-blue);
+    }
+
+    .mc-btn.btn-discord {
+      background: #5865F2;
+    }
+
+    .mc-btn.btn-instagram {
+      background: linear-gradient(135deg, #833AB4, #E1306C);
+    }
+
+    /* ============================================
+       MINECRAFT CARDS
+    ============================================ */
+    .mc-card {
+      background: rgba(0,0,0,0.85);
+      border: 6px solid var(--mc-wood);
+      padding: 40px;
+      margin: 40px auto;
+      max-width: 1200px;
+      box-shadow: 
+        0 10px 0 rgba(0,0,0,0.5),
+        inset 0 0 30px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .mc-card::before {
       content: '';
       position: absolute;
       top: -3px;
       left: -3px;
       right: -3px;
       bottom: -3px;
-      border-radius: 50%;
-      border: 3px solid var(--uc-gold);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      background: linear-gradient(45deg, var(--mc-wood), var(--mc-dirt), var(--mc-wood));
+      z-index: -1;
     }
 
-    .step:hover .step-number::after {
-      opacity: 1;
+    .mc-card-title {
+      font-size: 32px;
+      color: var(--uc-gold);
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 
+        3px 3px 0 rgba(0,0,0,0.5),
+        0 0 20px var(--uc-gold);
+      position: relative;
+      padding-bottom: 20px;
     }
 
-    .step h3 {
-      font-size: 20px;
-      color: var(--uc-blue);
-      margin-bottom: 15px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .step p {
-      color: #555;
-      line-height: 1.7;
-      font-size: 15px;
-    }
-
-    .step code {
-      background: #f0f0f0;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: 700;
-      color: var(--uc-blue);
-      font-size: 14px;
+    .mc-card-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 4px;
+      background: var(--uc-gold);
+      box-shadow: 0 0 10px var(--uc-gold);
     }
 
     /* ============================================
-       ALERT
+       HOW TO JOIN STEPS
     ============================================ */
-    .alert {
-      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-      border-left: 6px solid #F59E0B;
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .step-block {
+      background: linear-gradient(135deg, var(--mc-stone) 0%, #5a5a5a 100%);
+      border: 4px solid #000;
       padding: 25px;
-      border-radius: 12px;
-      margin-bottom: 35px;
-      display: flex;
-      align-items: start;
-      gap: 18px;
-      box-shadow: var(--shadow-sm);
+      text-align: center;
+      box-shadow: 
+        0 6px 0 rgba(0,0,0,0.5),
+        inset 2px 2px 0 rgba(255,255,255,0.2);
+      transition: all 0.3s;
+      position: relative;
     }
 
-    .alert i {
-      color: #F59E0B;
-      font-size: 26px;
-      margin-top: 3px;
+    .step-block:hover {
+      transform: translateY(-8px);
+      box-shadow: 
+        0 14px 0 rgba(0,0,0,0.5),
+        inset 2px 2px 0 rgba(255,255,255,0.3);
     }
 
-    .alert-content h3 {
-      font-size: 18px;
-      color: #92400E;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .alert-content p {
-      color: #78350F;
-      line-height: 1.7;
-    }
-
-    /* ============================================
-       LEADERBOARD
-    ============================================ */
-    .leaderboard-item {
-      display: flex;
-      align-items: center;
-      padding: 25px;
-      margin-bottom: 18px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-      border-radius: 16px;
-      border-left: 6px solid var(--uc-gold);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .leaderboard-item:hover {
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.1));
-      transform: translateX(10px) scale(1.02);
-      box-shadow: var(--shadow-md);
-    }
-
-    .rank {
-      width: 55px;
-      height: 55px;
-      background: linear-gradient(135deg, var(--uc-blue), #00509E);
-      color: white;
-      border-radius: 50%;
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: var(--uc-gold);
+      color: var(--uc-blue);
+      border: 4px solid #000;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 22px;
-      margin-right: 25px;
-      flex-shrink: 0;
-      box-shadow: var(--shadow-md);
+      font-size: 28px;
+      margin: 0 auto 20px;
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        inset 2px 2px 0 rgba(255,255,255,0.3);
     }
 
-    .rank-1 {
+    .step-block h3 {
+      font-size: 14px;
+      color: var(--uc-gold);
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    }
+
+    .step-block p {
+      font-size: 11px;
+      line-height: 1.8;
+      color: #ddd;
+    }
+
+    /* ============================================
+       LEADERBOARD WITH PLAYER SKINS
+    ============================================ */
+    .leaderboard-container {
+      margin-top: 30px;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(255,255,255,0.1);
+      border: 4px solid var(--mc-gold);
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        inset 0 0 20px rgba(253,181,21,0.1);
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .leaderboard-item:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateX(10px);
+      box-shadow: 
+        0 6px 0 rgba(0,0,0,0.5),
+        inset 0 0 30px rgba(253,181,21,0.2);
+    }
+
+    .leaderboard-rank {
+      width: 50px;
+      height: 50px;
+      background: var(--uc-blue);
+      border: 3px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--uc-gold);
+      flex-shrink: 0;
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        inset 0 0 10px rgba(253,181,21,0.3);
+    }
+
+    .leaderboard-rank.rank-1 {
       background: linear-gradient(135deg, #FFD700, #FFA500);
-      color: #003262;
-      font-size: 26px;
-      width: 65px;
-      height: 65px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      color: #000;
+      font-size: 28px;
+      width: 60px;
+      height: 60px;
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        0 0 20px rgba(255,215,0,0.6);
     }
 
-    .rank-2 {
+    .leaderboard-rank.rank-2 {
       background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
-      color: #003262;
-      box-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
+      color: #000;
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        0 0 15px rgba(192,192,192,0.5);
     }
 
-    .rank-3 {
+    .leaderboard-rank.rank-3 {
       background: linear-gradient(135deg, #CD7F32, #8B4513);
-      color: white;
-      box-shadow: 0 0 15px rgba(205, 127, 50, 0.4);
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        0 0 15px rgba(205,127,50,0.5);
     }
 
-    .player-avatar {
-      width: 65px;
-      height: 65px;
-      border-radius: 10px;
-      border: 3px solid var(--uc-gold);
-      margin-right: 25px;
+    .player-skin {
+      width: 64px;
+      height: 64px;
+      border: 3px solid #000;
       image-rendering: pixelated;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.5);
       flex-shrink: 0;
-      box-shadow: var(--shadow-sm);
+      background: rgba(255,255,255,0.1);
     }
 
-    .player-info {
+    .player-details {
       flex: 1;
     }
 
     .player-name {
-      font-size: 22px;
-      font-weight: 700;
+      font-size: 18px;
+      color: var(--uc-gold);
       margin-bottom: 8px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
     }
 
-    .player-hours {
-      background: linear-gradient(135deg, var(--uc-blue), #00509E);
-      color: white;
-      padding: 10px 24px;
-      border-radius: 25px;
-      font-weight: 700;
-      font-size: 18px;
-      flex-shrink: 0;
-      box-shadow: var(--shadow-sm);
+    .player-stats {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    .playtime-badge {
+      background: var(--mc-diamond);
+      color: #000;
+      padding: 10px 20px;
+      border: 3px solid #000;
+      font-size: 14px;
+      white-space: nowrap;
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        inset 0 0 10px rgba(93,236,245,0.5);
     }
 
     /* ============================================
        GALLERY
     ============================================ */
-    .gallery {
+    .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
     }
 
-    .gallery-item {
-      background: white;
-      border-radius: 16px;
+    .gallery-card {
+      background: rgba(0,0,0,0.7);
+      border: 4px solid var(--mc-wood);
       overflow: hidden;
-      box-shadow: var(--shadow-md);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 2px solid transparent;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.5);
+      transition: all 0.3s;
     }
 
-    .gallery-item:hover {
-      transform: translateY(-12px) scale(1.03);
-      box-shadow: var(--shadow-xl);
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 14px 0 rgba(0,0,0,0.5);
       border-color: var(--uc-gold);
     }
 
-    .gallery-img {
+    .gallery-image {
       width: 100%;
-      height: 220px;
+      height: 200px;
       object-fit: cover;
-      border-bottom: 4px solid var(--uc-gold);
+      border-bottom: 4px solid var(--mc-gold);
       cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .gallery-img:hover {
-      transform: scale(1.05);
+      image-rendering: pixelated;
     }
 
     .gallery-info {
-      padding: 25px;
+      padding: 20px;
     }
 
     .gallery-title {
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--uc-blue);
+      font-size: 14px;
+      color: var(--uc-gold);
       margin-bottom: 10px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
     }
 
-    .gallery-meta {
+    .gallery-builder {
+      font-size: 10px;
+      color: #aaa;
+    }
+
+    /* ============================================
+       ALERT BOX
+    ============================================ */
+    .alert-box {
+      background: rgba(245,158,11,0.2);
+      border: 4px solid #F59E0B;
+      padding: 20px;
+      margin: 20px 0;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #666;
-      font-size: 14px;
+      gap: 15px;
+      align-items: start;
+      box-shadow: 
+        0 4px 0 rgba(0,0,0,0.5),
+        inset 0 0 20px rgba(245,158,11,0.2);
+    }
+
+    .alert-box i {
+      font-size: 24px;
+      color: #F59E0B;
+    }
+
+    .alert-content h4 {
+      font-size: 12px;
+      color: #F59E0B;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    }
+
+    .alert-content p {
+      font-size: 10px;
+      line-height: 1.8;
+      color: #FDE68A;
     }
 
     /* ============================================
        MODAL
     ============================================ */
     .modal {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.85);
-      display: flex;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
       padding: 20px;
-      backdrop-filter: blur(8px);
     }
 
-    .modal.hidden {
-      display: none;
+    .modal.active {
+      display: flex;
     }
 
     .modal-content {
-      background: white;
-      padding: 50px;
-      border-radius: 24px;
-      max-width: 650px;
+      background: rgba(0,0,0,0.95);
+      border: 6px solid var(--uc-gold);
+      padding: 40px;
+      max-width: 700px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      border: 4px solid var(--uc-gold);
-      box-shadow: var(--shadow-xl);
-      animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 
+        0 10px 0 rgba(0,0,0,0.5),
+        0 0 50px rgba(253,181,21,0.5);
+      animation: modalPop 0.3s ease-out;
     }
 
-    /* ============================================
-       LIGHTBOX MODAL (for gallery images)
-    ============================================ */
-    .lightbox-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.95);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      cursor: pointer;
-    }
-
-    .lightbox-modal.hidden {
-      display: none;
-    }
-
-    .lightbox-content {
-      max-width: 90vw;
-      max-height: 90vh;
-      position: relative;
-      animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .lightbox-image {
-      max-width: 100%;
-      max-height: 90vh;
-      border-radius: 12px;
-      box-shadow: var(--shadow-xl);
-      border: 4px solid var(--uc-gold);
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: -50px;
-      right: 0;
-      background: var(--uc-gold);
-      color: var(--uc-blue);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: none;
-    }
-
-    .lightbox-close:hover {
-      background: white;
-      transform: rotate(90deg) scale(1.1);
-    }
-
-    .lightbox-info {
-      position: absolute;
-      bottom: -60px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      color: white;
-    }
-
-    .lightbox-info h3 {
-      font-size: 24px;
-      color: var(--uc-gold);
-      margin-bottom: 5px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    }
-
-    .lightbox-info p {
-      font-size: 16px;
-      color: #ddd;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    }
-
-    /* ============================================
-       MODAL (verification)
-    ============================================ */
-
-    @keyframes modalSlideIn {
+    @keyframes modalPop {
       from {
+        transform: scale(0.8);
         opacity: 0;
-        transform: translateY(30px) scale(0.9);
       }
       to {
+        transform: scale(1);
         opacity: 1;
-        transform: translateY(0) scale(1);
       }
     }
 
-    .modal h3 {
-      font-size: 32px;
-      color: var(--uc-blue);
+    .modal-content h3 {
+      font-size: 24px;
+      color: var(--uc-gold);
+      text-align: center;
       margin-bottom: 25px;
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
     }
 
     .modal-steps {
-      margin: 30px 0;
+      margin: 25px 0;
     }
 
     .modal-step {
       display: flex;
-      gap: 20px;
-      margin-bottom: 25px;
+      gap: 15px;
+      margin-bottom: 20px;
       align-items: start;
     }
 
     .modal-step-number {
-      width: 45px;
-      height: 45px;
-      background: linear-gradient(135deg, var(--uc-blue), #00509E);
-      color: white;
-      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background: var(--uc-gold);
+      color: var(--uc-blue);
+      border: 3px solid #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      flex-shrink: 0;
-      box-shadow: var(--shadow-sm);
       font-size: 18px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.5);
     }
 
     .modal-step-content h4 {
-      font-size: 17px;
-      color: var(--uc-blue);
+      font-size: 12px;
+      color: var(--uc-gold);
       margin-bottom: 8px;
-      font-weight: 700;
     }
 
     .modal-step-content p {
-      color: #666;
-      line-height: 1.7;
-    }
-
-    .modal-step-content code {
-      background: #f0f0f0;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: 700;
-      color: var(--uc-blue);
+      font-size: 10px;
+      line-height: 1.8;
+      color: #ddd;
     }
 
     /* ============================================
-       LOADING SPINNER
-    ============================================ */
-    .spinner {
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top: 4px solid var(--uc-gold);
-      width: 45px;
-      height: 45px;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* ============================================
-       FOOTER
-    ============================================ */
-    footer {
-      text-align: center;
-      padding: 50px 20px;
-      background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(20,20,20,0.85));
-      color: white;
-      margin-top: 80px;
-      border-top: 4px solid var(--uc-gold);
-    }
-
-    footer p {
-      margin: 12px 0;
-      font-size: 16px;
-    }
-
-    /* ============================================
-       TOAST NOTIFICATIONS
+       TOAST NOTIFICATION
     ============================================ */
     .toast {
       position: fixed;
       bottom: 30px;
       right: 30px;
-      background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.9));
-      color: white;
-      padding: 20px 32px;
-      border-radius: 12px;
-      box-shadow: var(--shadow-xl);
+      background: rgba(0,0,0,0.95);
+      border: 4px solid var(--mc-gold);
+      color: #fff;
+      padding: 15px 25px;
+      font-size: 11px;
       z-index: 2000;
-      animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
-      border: 2px solid var(--uc-gold);
-      max-width: 400px;
-      word-break: break-word;
+      box-shadow: 
+        0 6px 0 rgba(0,0,0,0.5),
+        0 0 20px rgba(252,238,75,0.5);
+      animation: toastSlide 0.3s ease-out;
+      max-width: 350px;
     }
 
-    @keyframes slideIn {
+    @keyframes toastSlide {
       from {
-        transform: translateX(450px);
+        transform: translateX(500px);
         opacity: 0;
       }
       to {
@@ -1059,83 +844,123 @@
     }
 
     /* ============================================
-       SCROLLBAR STYLING
+       FOOTER
     ============================================ */
-    ::-webkit-scrollbar {
-      width: 12px;
+    footer {
+      background: rgba(0,0,0,0.9);
+      border-top: 6px solid var(--mc-gold);
+      padding: 40px 20px;
+      text-align: center;
+      margin-top: 60px;
+      box-shadow: 0 -10px 0 rgba(0,0,0,0.5);
     }
 
-    ::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.1);
+    footer p {
+      font-size: 11px;
+      color: #aaa;
+      margin: 10px 0;
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, var(--uc-gold), #e6a000);
-      border-radius: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(180deg, #e6a000, var(--uc-gold));
+    footer .footer-title {
+      color: var(--uc-gold);
+      font-size: 14px;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
     }
 
     /* ============================================
-       RESPONSIVE DESIGN
+       LOADING SPINNER
+    ============================================ */
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255,255,255,0.2);
+      border-top: 5px solid var(--uc-gold);
+      border-radius: 0;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ============================================
+       RESPONSIVE
     ============================================ */
     @media (max-width: 768px) {
-      .title-group h1 {
-        font-size: 36px;
-      }
-      
-      .title-group p {
-        font-size: 14px;
-      }
-      
-      .logo-container {
-        flex-direction: column;
-        padding: 30px;
-        gap: 25px;
-      }
-      
-      .logo {
-        width: 100px;
-        height: 100px;
+      .main-title {
+        font-size: 28px;
       }
 
-      .logo-text {
-        font-size: 26px;
-      }
-      
-      .card {
-        padding: 30px 20px;
-      }
-      
-      .card h2 {
-        font-size: 30px;
-      }
-      
-      .steps {
-        grid-template-columns: 1fr;
-      }
-      
-      .action-buttons {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-        justify-content: center;
+      .subtitle {
+        font-size: 12px;
       }
 
-      .modal-content {
-        padding: 30px;
+      .logo-3d {
+        width: 120px;
+        height: 120px;
       }
 
-      .status-card {
+      .logo-cube-face {
+        width: 120px;
+        height: 120px;
+        font-size: 48px;
+      }
+
+      .logo-cube-face.front {
+        transform: translateZ(60px);
+      }
+
+      .logo-cube-face.back {
+        transform: translateZ(-60px) rotateY(180deg);
+      }
+
+      .logo-cube-face.right {
+        transform: rotateY(90deg) translateZ(60px);
+      }
+
+      .logo-cube-face.left {
+        transform: rotateY(-90deg) translateZ(60px);
+      }
+
+      .logo-cube-face.top {
+        transform: rotateX(90deg) translateZ(60px);
+      }
+
+      .logo-cube-face.bottom {
+        transform: rotateX(-90deg) translateZ(60px);
+      }
+
+      .mc-card {
         padding: 25px;
       }
 
-      .player-count {
+      .mc-card-title {
+        font-size: 20px;
+      }
+
+      .mc-btn {
+        font-size: 11px;
+        padding: 12px 20px;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .player-count-display {
         font-size: 48px;
+      }
+
+      .leaderboard-item {
+        flex-wrap: wrap;
+      }
+
+      .playtime-badge {
+        width: 100%;
+        text-align: center;
       }
 
       .toast {
@@ -1144,21 +969,34 @@
         left: 20px;
         max-width: calc(100% - 40px);
       }
+
+      .modal-content {
+        padding: 25px;
+      }
     }
   </style>
 </head>
 
 <body>
 
+<!-- Floating Clouds -->
+<div class="clouds">
+  <div class="cloud" style="top: 20px; left: 10%;"></div>
+  <div class="cloud" style="top: 80px; left: 40%;"></div>
+  <div class="cloud" style="top: 150px; left: 70%;"></div>
+  <div class="cloud" style="top: 50px; left: 110%;"></div>
+  <div class="cloud" style="top: 120px; left: 140%;"></div>
+</div>
+
 <!-- Verification Modal -->
-<div id="verificationModal" class="modal hidden">
+<div id="verificationModal" class="modal">
   <div class="modal-content">
-    <h3 class="font-pixel">HOW TO GET VERIFIED</h3>
+    <h3>HOW TO GET VERIFIED</h3>
     
-    <div class="alert">
+    <div class="alert-box">
       <i class="fas fa-info-circle"></i>
       <div class="alert-content">
-        <p><strong>Important:</strong> You must join the Minecraft server first to receive your verification code!</p>
+        <p>You must join the Minecraft server first to receive your verification code!</p>
       </div>
     </div>
     
@@ -1166,417 +1004,482 @@
       <div class="modal-step">
         <div class="modal-step-number">1</div>
         <div class="modal-step-content">
-          <h4>Join the Minecraft Server</h4>
-          <p>Connect to: <code>ucminecraft.artisen.xyz</code></p>
-          <p style="font-size:13px;color:#999;margin-top:6px;">Java: Default port | Bedrock: Port 19133</p>
+          <h4>JOIN THE SERVER</h4>
+          <p>Connect to: ucminecraft.artisen.xyz<br>Java: Default port | Bedrock: Port 19133</p>
         </div>
       </div>
       
       <div class="modal-step">
         <div class="modal-step-number">2</div>
         <div class="modal-step-content">
-          <h4>Get Your Code In-Game</h4>
-          <p>When you connect, you'll see your unique verification code displayed in-game</p>
+          <h4>GET YOUR CODE</h4>
+          <p>You'll see your unique verification code displayed when you connect</p>
         </div>
       </div>
       
       <div class="modal-step">
         <div class="modal-step-number">3</div>
         <div class="modal-step-content">
-          <h4>Send Code to Discord Bot</h4>
-          <p>DM your code to <strong>UC Minecraft#2543</strong> on Discord</p>
-          <p style="font-size:13px;color:#999;margin-top:6px;">(Bot has UC Davis Aggie Mascot profile)</p>
+          <h4>DM DISCORD BOT</h4>
+          <p>Send code to UC Minecraft#2543 (Aggie mascot profile)</p>
         </div>
       </div>
       
       <div class="modal-step">
         <div class="modal-step-number">4</div>
         <div class="modal-step-content">
-          <h4>Start Playing!</h4>
-          <p>Once verified, you'll have full access to the server</p>
+          <h4>START PLAYING!</h4>
+          <p>Once verified, you'll have full server access</p>
         </div>
       </div>
     </div>
     
-    <div style="background:#f8f9fa;padding:18px;border-radius:10px;margin-top:25px;">
-      <p style="color:#666;font-size:14px;line-height:1.6;">
-        <strong>Need help?</strong> Contact <code style="background:#000;color:#10B981;padding:3px 8px;border-radius:4px;">@lilhoodrathorsey</code> or <code style="background:#000;color:#10B981;padding:3px 8px;border-radius:4px;">@Maskedd</code> on Discord.
-      </p>
-    </div>
-    
-    <button onclick="closeVerificationModal()" class="btn btn-primary" style="width:100%;margin-top:25px;justify-content:center;">
-      <span>UNDERSTOOD</span>
+    <button onclick="closeModal()" class="mc-btn btn-gold" style="width:100%;justify-content:center;">
+      <span>GOT IT!</span>
     </button>
   </div>
 </div>
 
-<!-- Lightbox Modal for Gallery Images -->
-<div id="lightboxModal" class="lightbox-modal hidden" onclick="closeLightbox()">
-  <div class="lightbox-content" onclick="event.stopPropagation()">
-    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-    <img id="lightboxImage" class="lightbox-image" src="" alt="">
-    <div class="lightbox-info">
-      <h3 id="lightboxTitle"></h3>
-      <p id="lightboxBuilder"></p>
-    </div>
-  </div>
-</div>
-
-<!-- Main Content -->
 <div class="container">
   
   <!-- Header -->
   <header class="header">
-    <div class="logo-container">
-      <div class="logo">
-        <div class="logo-block">
-          <div class="logo-face top"></div>
-          <div class="logo-face front">
-            <div class="logo-text">UC</div>
-          </div>
-          <div class="logo-face right"></div>
-          <div class="logo-face left"></div>
-          <div class="logo-face bottom"></div>
-          <div class="logo-face back"></div>
-        </div>
-      </div>
-      <div class="title-group font-pixel">
-        <h1>UC MINECRAFT</h1>
-        <p>BEACH PARTY EDITION</p>
+    <div class="logo-3d">
+      <div class="logo-cube">
+        <div class="logo-cube-face front">UC</div>
+        <div class="logo-cube-face back"></div>
+        <div class="logo-cube-face right"></div>
+        <div class="logo-cube-face left"></div>
+        <div class="logo-cube-face top"></div>
+        <div class="logo-cube-face bottom"></div>
       </div>
     </div>
     
-    <!-- Server Status -->
-    <div class="status-card">
-      <div class="status-header font-pixel">
-        <span class="status-dot loading" id="statusDot"></span>
-        <span id="statusText">CHECKING SERVER...</span>
-      </div>
-      
-      <div class="player-count font-pixel">
-        <span id="playerCount">
-          <div class="spinner"></div>
-        </span>
-      </div>
-      <p style="text-align:center;color:#aaa;font-size:15px;font-weight:600;">PLAYERS ONLINE</p>
-      
-      <div class="server-ip" onclick="copyServerIP()" title="Click to copy">
-        <p style="color:#999;font-size:13px;margin-bottom:8px;font-weight:600;">SERVER IP</p>
-        <code>ucminecraft.artisen.xyz</code>
-        <p style="color:#777;font-size:12px;margin-top:10px;">Click to copy • Version 1.21.10</p>
-      </div>
-    </div>
-    
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <button onclick="showVerificationModal()" class="btn btn-success">
-        <i class="fas fa-shield-alt"></i>
-        <span>GET VERIFIED</span>
-      </button>
-      <a href="https://discord.gg/peSB774D5j" class="btn btn-discord" target="_blank" rel="noopener">
-        <i class="fab fa-discord"></i>
-        <span>JOIN DISCORD</span>
-      </a>
-      <a href="https://www.instagram.com/ucminecraft/" class="btn btn-instagram" target="_blank" rel="noopener">
-        <i class="fab fa-instagram"></i>
-        <span>INSTAGRAM</span>
-      </a>
-    </div>
+    <h1 class="main-title">UC MINECRAFT</h1>
+    <p class="subtitle">BEACH PARTY EDITION</p>
   </header>
 
-  <!-- How to Join -->
-  <section class="card">
-    <h2 class="font-pixel">HOW TO JOIN</h2>
+  <!-- Server Status -->
+  <div class="status-card">
+    <div class="status-indicator">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">CHECKING SERVER...</span>
+    </div>
     
-    <div class="alert">
+    <div class="player-count-display" id="playerCount">
+      <div class="spinner"></div>
+    </div>
+    <p style="text-align:center;font-size:12px;color:#aaa;">PLAYERS ONLINE</p>
+    
+    <div class="server-ip-box" onclick="copyIP()">
+      <p style="font-size:10px;color:#666;margin-bottom:8px;">SERVER IP</p>
+      <code>ucminecraft.artisen.xyz</code>
+      <p style="font-size:9px;color:#555;margin-top:8px;">Version 1.21.10</p>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="btn-row">
+    <button onclick="openModal()" class="mc-btn btn-diamond">
+      <i class="fas fa-shield-alt"></i>
+      <span>GET VERIFIED</span>
+    </button>
+    <a href="https://discord.gg/peSB774D5j" class="mc-btn btn-discord" target="_blank">
+      <i class="fab fa-discord"></i>
+      <span>JOIN DISCORD</span>
+    </a>
+    <a href="https://www.instagram.com/ucminecraft/" class="mc-btn btn-instagram" target="_blank">
+      <i class="fab fa-instagram"></i>
+      <span>INSTAGRAM</span>
+    </a>
+  </div>
+
+  <!-- How to Join -->
+  <div class="mc-card">
+    <h2 class="mc-card-title">HOW TO JOIN</h2>
+    
+    <div class="alert-box">
       <i class="fas fa-exclamation-triangle"></i>
       <div class="alert-content">
-        <h3>ACCOUNT LINKING REQUIRED</h3>
-        <p>Due to repeated griefing this month, the University of California Minecraft server now requires all players to link their Discord accounts to ensure a fair and enjoyable experience.</p>
+        <h4>ACCOUNT LINKING REQUIRED</h4>
+        <p>Due to repeated griefing, all players must link their Discord accounts to ensure a fair and enjoyable experience.</p>
       </div>
     </div>
     
-    <div class="steps">
-      <div class="step">
+    <div class="steps-grid">
+      <div class="step-block">
         <div class="step-number">1</div>
         <h3>JOIN MINECRAFT</h3>
-        <p>Connect to <code>ucminecraft.artisen.xyz</code></p>
-        <p style="font-size:13px;color:#999;margin-top:10px;">Java: Default • Bedrock: Port 19133</p>
+        <p>Connect to ucminecraft.artisen.xyz<br><br>Java: Default<br>Bedrock: Port 19133</p>
       </div>
       
-      <div class="step">
+      <div class="step-block">
         <div class="step-number">2</div>
         <h3>GET YOUR CODE</h3>
-        <p>You'll see your unique verification code displayed when you connect</p>
+        <p>Your unique verification code will be displayed when you connect</p>
       </div>
       
-      <div class="step">
+      <div class="step-block">
         <div class="step-number">3</div>
         <h3>DM DISCORD BOT</h3>
-        <p>Send your code to <strong>UC Minecraft#2543</strong></p>
-        <p style="font-size:13px;color:#999;margin-top:10px;">(Aggie mascot profile)</p>
+        <p>Send your code to UC Minecraft#2543<br><br>(Aggie mascot profile)</p>
       </div>
       
-      <div class="step">
+      <div class="step-block">
         <div class="step-number">4</div>
         <h3>START PLAYING</h3>
         <p>Once verified, you'll have full server access!</p>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- Leaderboard -->
-  <section class="card card-dark">
-    <h2 class="font-pixel">TOP PLAYERS</h2>
-    <p style="text-align:center;color:#aaa;margin-bottom:35px;font-size:15px;">Most active players this month</p>
+  <div class="mc-card">
+    <h2 class="mc-card-title">TOP PLAYERS</h2>
+    <p style="text-align:center;font-size:11px;color:#aaa;margin-bottom:25px;">Ranked by total playtime</p>
     
-    <div id="leaderboardContainer">
-      <div style="text-align:center;padding:50px;">
+    <div class="leaderboard-container" id="leaderboard">
+      <div style="text-align:center;padding:40px;">
         <div class="spinner"></div>
-        <p style="color:#999;margin-top:25px;font-size:15px;">Loading player stats...</p>
+        <p style="font-size:11px;color:#999;margin-top:15px;">Loading player stats...</p>
       </div>
     </div>
     
-    <div style="text-align:center;margin-top:35px;">
-      <button onclick="updateLeaderboard()" class="btn btn-primary">
+    <div style="text-align:center;margin-top:25px;">
+      <button onclick="loadLeaderboard()" class="mc-btn btn-gold">
         <i class="fas fa-sync-alt"></i>
         <span>REFRESH STATS</span>
       </button>
     </div>
-  </section>
+  </div>
 
   <!-- Gallery -->
-  <section class="card">
-    <h2 class="font-pixel">COMMUNITY GALLERY</h2>
-    <p style="text-align:center;color:#666;margin-bottom:35px;font-size:15px;">Amazing builds by our players</p>
+  <div class="mc-card">
+    <h2 class="mc-card-title">COMMUNITY BUILDS</h2>
+    <p style="text-align:center;font-size:11px;color:#aaa;margin-bottom:25px;">Amazing creations by our players</p>
     
-    <div class="gallery" id="galleryContainer">
-      <!-- Gallery items loaded dynamically -->
-    </div>
+    <div class="gallery-grid" id="gallery"></div>
     
-    <div style="text-align:center;margin-top:35px;">
-      <button onclick="showSubmissionInfo()" class="btn btn-primary">
+    <div style="text-align:center;margin-top:25px;">
+      <button onclick="showSubmitInfo()" class="mc-btn btn-diamond">
         <i class="fas fa-upload"></i>
-        <span>SUBMIT YOUR BUILD</span>
+        <span>SUBMIT BUILD</span>
       </button>
     </div>
-  </section>
+  </div>
 
 </div>
 
 <!-- Footer -->
 <footer>
-  <p class="font-pixel" style="font-size:14px;margin-bottom:15px;">© 2025-2026 UC MINECRAFT</p>
-  <p style="font-size:15px;">Server Status: <span id="footerStatus" style="font-weight:600;">Checking...</span></p>
-  <p style="font-size:14px;color:#999;margin-top:15px;">Made with ❤️ by the UC Community</p>
+  <p class="footer-title">UC MINECRAFT 2025-2026</p>
+  <p>Server Status: <span id="footerStatus">Checking...</span></p>
+  <p style="margin-top:15px;">Made with ❤️ by the UC Community</p>
 </footer>
 
 <script>
 // ============================================
-// SERVER STATUS CHECKING
+// GLOBAL VARIABLES & CONFIGURATION
 // ============================================
-
-let serverStatus = {
-  online: false,
-  players: 0,
-  maxPlayers: 50,
-  version: "1.21.10"
-};
-
 const SERVER_IP = 'ucminecraft.artisen.xyz';
-const JAVA_PORT = 25565;
-const BEDROCK_PORT = 19133;
+let serverOnline = true;
+let playerCount = 0;
+let leaderboardData = [];
 
-let lastStatusCheck = 0;
-const STATUS_CACHE_TIME = 15000;
-let isChecking = false;
+// ============================================
+// API CONFIGURATION
+// ============================================
+// OPTION 1: If you have a backend API that provides player statistics
+// Replace this URL with your actual API endpoint
+const API_ENDPOINT = 'YOUR_API_ENDPOINT_HERE'; // e.g., 'https://api.yourserver.com/players/stats'
 
-async function testDirectConnection() {
-  try {
-    const testUrl = `https://api.minetools.eu/ping/${SERVER_IP}/${JAVA_PORT}`;
-    
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
-    
-    const response = await fetch(testUrl, {
-      signal: controller.signal,
-      mode: 'cors',
-      cache: 'no-cache'
-    });
-    
-    clearTimeout(timeoutId);
-    
-    if (response.ok) {
-      const data = await response.json();
-      if (data && !data.error) {
-        return {
-          online: true,
-          players: data.players?.online || 0,
-          maxPlayers: data.players?.max || 50,
-          version: data.version?.name?.split(' ')[0] || "1.21.10"
-        };
-      }
-    }
-  } catch (error) {
-    console.log('Direct connection test failed, trying fallback methods...');
+// OPTION 2: If you're using a plugin like Plan, LuckPerms, or custom plugin
+// that exposes player data via JSON API
+const STATS_API = 'YOUR_STATS_API_HERE'; // e.g., 'https://yourserver.com/plan/v1/players'
+
+// OPTION 3: Manual data entry (for now, until you set up API)
+// You can manually update this data from your server stats
+const MANUAL_PLAYER_DATA = [
+  // Example format - update with your real players:
+  {
+    uuid: '069a79f4-44e9-4726-a5be-fca90e38aaf5', // Player UUID
+    username: 'lilhoodrathorsey',
+    playtimeMinutes: 14852, // Total playtime in minutes
+    firstJoin: '2025-01-15',
+    lastSeen: '2025-02-06'
+  },
+  {
+    uuid: 'f7c77d99-9f15-4a66-a87c-c4a51ef8e7b0',
+    username: 'Maskedd',
+    playtimeMinutes: 11895,
+    firstJoin: '2025-01-16',
+    lastSeen: '2025-02-05'
+  },
+  {
+    uuid: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    username: 'yumihan',
+    playtimeMinutes: 9402,
+    firstJoin: '2025-01-20',
+    lastSeen: '2025-02-04'
   }
-  
-  return null;
+  // Add more players here...
+];
+
+const galleryData = [
+  {
+    title: 'The Dreamcatcher',
+    builder: 'yumihan',
+    image: 'yumihan.png',
+    date: 'Feb 2026'
+  }
+];
+
+// ============================================
+// SERVER STATUS FUNCTIONS
+// ============================================
+async function checkServerStatus() {
+  try {
+    const response = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
+    const data = await response.json();
+    
+    serverOnline = data.online || false;
+    playerCount = data.players?.online || 0;
+    
+    updateStatusUI();
+  } catch (error) {
+    console.error('Failed to check server status:', error);
+    // Assume online if check fails
+    serverOnline = true;
+    playerCount = 0;
+    updateStatusUI();
+  }
 }
 
-async function checkServerStatusImproved() {
-  if (isChecking || (Date.now() - lastStatusCheck < STATUS_CACHE_TIME && lastStatusCheck !== 0)) {
-    return serverStatus;
-  }
-  
-  isChecking = true;
-  lastStatusCheck = Date.now();
-  
-  updateUIWithLoading();
-  
-  try {
-    const directResult = await testDirectConnection();
-    if (directResult) {
-      serverStatus = directResult;
-      isChecking = false;
-      return serverStatus;
-    }
-    
-    const endpoints = [
-      `https://api.mcsrvstat.us/2/${SERVER_IP}`,
-      `https://api.mcstatus.io/v2/status/java/${SERVER_IP}`,
-      `https://api.minetools.eu/query/${SERVER_IP}/${JAVA_PORT}`,
-      `https://api.minetools.eu/ping/${SERVER_IP}/${BEDROCK_PORT}`
-    ];
-    
-    const promises = endpoints.map(endpoint => 
-      fetch(endpoint, {
-        mode: 'cors',
-        cache: 'no-cache',
-        headers: { 'Accept': 'application/json' }
-      }).then(res => res.ok ? res.json() : null).catch(() => null)
-    );
-    
-    for (const promise of promises) {
-      try {
-        const data = await Promise.race([
-          promise,
-          new Promise(resolve => setTimeout(() => resolve(null), 2000))
-        ]);
-        
-        if (data) {
-          if (data.online !== undefined) {
-            serverStatus = {
-              online: data.online,
-              players: data.players?.online || data.players?.now || 0,
-              maxPlayers: data.players?.max || 50,
-              version: data.version || data.version?.name_clean || "1.21.10"
-            };
-            break;
-          } else if (data.players) {
-            serverStatus = {
-              online: true,
-              players: data.players.online || 0,
-              maxPlayers: data.players.max || 50,
-              version: data.version?.name?.split(' ')[0] || "1.21.10"
-            };
-            break;
-          }
-        }
-      } catch (e) {
-        continue;
-      }
-    }
-    
-    if (!serverStatus.online) {
-      serverStatus = {
-        online: true,
-        players: 0,
-        maxPlayers: 50,
-        version: "1.21.10"
-      };
-    }
-    
-  } catch (error) {
-    console.error('Server status check failed:', error);
-    serverStatus.online = true;
-  } finally {
-    isChecking = false;
-  }
-  
-  return serverStatus;
-}
-
-function updateUIWithLoading() {
+function updateStatusUI() {
   const statusDot = document.getElementById('statusDot');
   const statusText = document.getElementById('statusText');
-  const playerCount = document.getElementById('playerCount');
-  
-  if (statusDot) statusDot.className = 'status-dot loading';
-  if (statusText) statusText.textContent = 'CHECKING SERVER...';
-  if (playerCount) playerCount.innerHTML = '<div class="spinner"></div>';
-}
-
-function updateUIWithStatus() {
-  const statusDot = document.getElementById('statusDot');
-  const statusText = document.getElementById('statusText');
-  const playerCount = document.getElementById('playerCount');
+  const playerCountEl = document.getElementById('playerCount');
   const footerStatus = document.getElementById('footerStatus');
   
-  if (serverStatus.online) {
-    if (statusDot) statusDot.className = 'status-dot';
-    if (statusText) statusText.textContent = '✓ SERVER ONLINE';
-    if (playerCount) playerCount.textContent = `${serverStatus.players}/${serverStatus.maxPlayers}`;
-    if (footerStatus) {
-      footerStatus.textContent = `Online - ${serverStatus.players} player${serverStatus.players !== 1 ? 's' : ''}`;
-      footerStatus.style.color = '#10B981';
-    }
+  if (serverOnline) {
+    statusDot.className = 'status-dot';
+    statusText.textContent = '✓ SERVER ONLINE';
+    playerCountEl.textContent = playerCount;
+    footerStatus.textContent = `Online - ${playerCount} player${playerCount !== 1 ? 's' : ''}`;
+    footerStatus.style.color = '#10B981';
   } else {
-    if (statusDot) statusDot.className = 'status-dot offline';
-    if (statusText) statusText.textContent = '✗ SERVER OFFLINE';
-    if (playerCount) playerCount.textContent = '0';
-    if (footerStatus) {
-      footerStatus.textContent = 'Offline';
-      footerStatus.style.color = '#EF4444';
-    }
+    statusDot.className = 'status-dot offline';
+    statusText.textContent = '✗ SERVER OFFLINE';
+    playerCountEl.textContent = '0';
+    footerStatus.textContent = 'Offline';
+    footerStatus.style.color = '#EF4444';
   }
 }
 
-async function updateServerStatus() {
+// ============================================
+// UTILITY FUNCTIONS FOR PLAYER DATA
+// ============================================
+function formatPlaytime(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours}h ${mins}m`;
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ============================================
+// FETCH PLAYER DATA FROM SERVER
+// ============================================
+async function fetchPlayerStats() {
   try {
-    await checkServerStatusImproved();
-    updateUIWithStatus();
-    
-    if (serverStatus.online && serverStatus.players > 0) {
-      showToast(`Server is online with ${serverStatus.players} players!`);
+    // OPTION 1: Try to fetch from your custom API
+    if (API_ENDPOINT && API_ENDPOINT !== 'YOUR_API_ENDPOINT_HERE') {
+      const response = await fetch(API_ENDPOINT);
+      if (response.ok) {
+        const data = await response.json();
+        return processPlayerData(data);
+      }
     }
+    
+    // OPTION 2: Try to fetch from stats plugin API (like Plan)
+    if (STATS_API && STATS_API !== 'YOUR_STATS_API_HERE') {
+      const response = await fetch(STATS_API);
+      if (response.ok) {
+        const data = await response.json();
+        return processPlayerData(data);
+      }
+    }
+    
+    // OPTION 3: Use manual data as fallback
+    return processPlayerData(MANUAL_PLAYER_DATA);
+    
   } catch (error) {
-    console.error('Failed to update server status:', error);
+    console.error('Failed to fetch player stats:', error);
+    // Return manual data as fallback
+    return processPlayerData(MANUAL_PLAYER_DATA);
   }
+}
+
+function processPlayerData(rawData) {
+  // Process and format the player data
+  // This function adapts different API formats to our standard format
+  
+  if (!rawData || rawData.length === 0) {
+    return [];
+  }
+  
+  // Convert to standard format
+  const processed = rawData.map(player => ({
+    uuid: player.uuid || player.id || '',
+    username: player.username || player.name || 'Unknown',
+    playtime: formatPlaytime(player.playtimeMinutes || player.playTime || player.totalPlaytime || 0),
+    playtimeMinutes: player.playtimeMinutes || player.playTime || player.totalPlaytime || 0,
+    firstJoin: player.firstJoin || player.joined || 'Unknown',
+    lastSeen: player.lastSeen || player.lastOnline || 'Unknown'
+  }));
+  
+  // Sort by playtime (descending)
+  return processed.sort((a, b) => b.playtimeMinutes - a.playtimeMinutes);
+}
+
+// Get player skin URL by UUID (more reliable than username)
+function getPlayerSkinUrl(uuid, username) {
+  // Try multiple skin services for reliability
+  // Primary: crafatar (uses UUID)
+  if (uuid && uuid !== '') {
+    return `https://crafatar.com/avatars/${uuid}?size=64&overlay`;
+  }
+  // Fallback: mc-heads (uses username)
+  return `https://mc-heads.net/avatar/${username}/64`;
+}
+
+// ============================================
+// LEADERBOARD FUNCTIONS
+// ============================================
+async function loadLeaderboard() {
+  const container = document.getElementById('leaderboard');
+  
+  // Show loading state
+  container.innerHTML = `
+    <div style="text-align:center;padding:50px;">
+      <div class="spinner"></div>
+      <p style="font-size:11px;color:#999;margin-top:15px;">Loading player stats...</p>
+    </div>
+  `;
+  
+  try {
+    // Fetch player stats
+    leaderboardData = await fetchPlayerStats();
+    
+    if (leaderboardData.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:50px;">
+          <i class="fas fa-users" style="font-size:48px;color:#666;margin-bottom:20px;"></i>
+          <p style="font-size:14px;color:#aaa;">No players yet. Be the first to join!</p>
+        </div>
+      `;
+      return;
+    }
+    
+    // Display top 10 players
+    const topPlayers = leaderboardData.slice(0, 10);
+    
+    container.innerHTML = topPlayers.map((player, index) => {
+      const actualRank = index + 1;
+      const rankClass = actualRank === 1 ? 'rank-1' : actualRank === 2 ? 'rank-2' : actualRank === 3 ? 'rank-3' : '';
+      
+      // Get player skin URL using UUID (more reliable)
+      const skinUrl = getPlayerSkinUrl(player.uuid, player.username);
+      
+      // Calculate days since first join
+      const daysSinceJoin = player.firstJoin !== 'Unknown' 
+        ? Math.floor((new Date() - new Date(player.firstJoin)) / (1000 * 60 * 60 * 24))
+        : '?';
+      
+      return `
+        <div class="leaderboard-item">
+          <div class="leaderboard-rank ${rankClass}">${actualRank}</div>
+          <img src="${skinUrl}" alt="${player.username}" class="player-skin" 
+               onerror="this.src='https://mc-heads.net/avatar/steve/64'">
+          <div class="player-details">
+            <div class="player-name">${player.username}</div>
+            <div class="player-stats">Rank #${actualRank} • Joined ${daysSinceJoin} days ago</div>
+          </div>
+          <div class="playtime-badge">${player.playtime}</div>
+        </div>
+      `;
+    }).join('');
+    
+    showToast('✓ Leaderboard updated!');
+    
+  } catch (error) {
+    console.error('Error loading leaderboard:', error);
+    container.innerHTML = `
+      <div style="text-align:center;padding:50px;">
+        <i class="fas fa-exclamation-triangle" style="font-size:48px;color:#F59E0B;margin-bottom:20px;"></i>
+        <p style="font-size:14px;color:#aaa;">Failed to load player stats</p>
+        <button onclick="loadLeaderboard()" class="mc-btn btn-gold" style="margin-top:20px;">
+          <i class="fas fa-redo"></i> <span>TRY AGAIN</span>
+        </button>
+      </div>
+    `;
+  }
+}
+
+// ============================================
+// GALLERY FUNCTIONS
+// ============================================
+function loadGallery() {
+  const container = document.getElementById('gallery');
+  
+  if (galleryData.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:50px;grid-column:1/-1;">
+        <i class="fas fa-camera" style="font-size:48px;color:#666;margin-bottom:20px;"></i>
+        <p style="font-size:14px;color:#aaa;">No builds yet. Submit yours!</p>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = galleryData.map(item => `
+    <div class="gallery-card">
+      <img src="${item.image}" alt="${item.title}" class="gallery-image"
+           onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23333%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%23666%22 font-family=%22Arial%22 font-size=%2218%22 x=%22150%22 y=%22150%22%3EImage Error%3C/text%3E%3C/svg%3E'">
+      <div class="gallery-info">
+        <div class="gallery-title">${item.title}</div>
+        <div class="gallery-builder">
+          <i class="fas fa-user"></i> ${item.builder} • ${item.date}
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
 // ============================================
 // UTILITY FUNCTIONS
 // ============================================
-
-function showVerificationModal() {
-  document.getElementById('verificationModal').classList.remove('hidden');
-}
-
-function closeVerificationModal() {
-  document.getElementById('verificationModal').classList.add('hidden');
-}
-
-function copyServerIP() {
-  navigator.clipboard.writeText('ucminecraft.artisen.xyz').then(() => {
-    showToast('✓ Server IP copied to clipboard!');
+function copyIP() {
+  navigator.clipboard.writeText(SERVER_IP).then(() => {
+    showToast('✓ Server IP copied!');
   }).catch(() => {
-    showToast('Failed to copy. Please copy manually: ucminecraft.artisen.xyz');
+    showToast('Failed to copy IP');
   });
 }
 
-function showSubmissionInfo() {
-  showToast('TO SUBMIT YOUR BUILD:\n\n1. Take screenshots of your creation\n2. Upload to imgur or similar\n3. Send link to admins on Discord\n4. Include your Minecraft username\n\nAdmins will add approved builds to gallery!');
+function openModal() {
+  document.getElementById('verificationModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('verificationModal').classList.remove('active');
+}
+
+function showSubmitInfo() {
+  showToast('TO SUBMIT YOUR BUILD:\n\n1. Take screenshots\n2. Upload to imgur\n3. Send link to admins on Discord\n4. Include your MC username');
 }
 
 function showToast(message) {
@@ -1585,139 +1488,42 @@ function showToast(message) {
   
   const toast = document.createElement('div');
   toast.id = 'toast';
-  toast.className = 'toast font-pixel';
-  toast.style.fontSize = '12px';
-  toast.style.lineHeight = '1.6';
+  toast.className = 'toast';
   toast.textContent = message;
   document.body.appendChild(toast);
   
   setTimeout(() => {
     if (toast.parentNode) {
-      toast.style.animation = 'slideOut 0.3s ease';
-      setTimeout(() => toast.parentNode.removeChild(toast), 300);
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 300);
     }
-  }, 5000);
-}
-
-// ============================================
-// LEADERBOARD & GALLERY
-// ============================================
-
-const playerData = [];
-const galleryData = [
-  {
-    title: "The Dreamcatcher",
-    builder: "yumihan",
-    image: "yumihan.png",
-    date: "Feb 2026"
-  }
-];
-
-function updateLeaderboard() {
-  const container = document.getElementById('leaderboardContainer');
-  
-  if (playerData.length === 0) {
-    container.innerHTML = `
-      <div style="text-align:center;padding:70px 20px;">
-        <i class="fas fa-users" style="font-size:70px;color:#666;margin-bottom:25px;"></i>
-        <h3 style="color:#aaa;font-size:22px;margin-bottom:12px;font-weight:700;">NO PLAYERS YET</h3>
-        <p style="color:#777;font-size:15px;">Be the first to join and get verified!</p>
-      </div>
-    `;
-    return;
-  }
-  
-  showToast('✓ Leaderboard updated!');
-}
-
-function loadGallery() {
-  const container = document.getElementById('galleryContainer');
-  
-  if (galleryData.length === 0) {
-    container.innerHTML = `
-      <div style="text-align:center;padding:70px 20px;grid-column:1/-1;">
-        <i class="fas fa-camera" style="font-size:70px;color:#666;margin-bottom:25px;"></i>
-        <h3 style="color:#999;font-size:22px;margin-bottom:12px;font-weight:700;">NO BUILDS YET</h3>
-        <p style="color:#666;font-size:15px;">Be the first to submit your amazing creation!</p>
-      </div>
-    `;
-    return;
-  }
-  
-  // Generate gallery items
-  container.innerHTML = galleryData.map((item, index) => `
-    <div class="gallery-item">
-      <img src="${item.image}" alt="${item.title}" class="gallery-img" onclick="openLightbox(${index})" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 font-family=%22Arial%22 font-size=%2218%22 x=%22150%22 y=%22150%22%3EImage Error%3C/text%3E%3C/svg%3E'">
-      <div class="gallery-info">
-        <div class="gallery-title">${item.title}</div>
-        <div class="gallery-meta">
-          <span><i class="fas fa-user"></i> ${item.builder}</span>
-          <span><i class="fas fa-calendar"></i> ${item.date}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ============================================
-// LIGHTBOX FUNCTIONS
-// ============================================
-
-function openLightbox(index) {
-  const item = galleryData[index];
-  const modal = document.getElementById('lightboxModal');
-  const image = document.getElementById('lightboxImage');
-  const title = document.getElementById('lightboxTitle');
-  const builder = document.getElementById('lightboxBuilder');
-  
-  image.src = item.image;
-  image.alt = item.title;
-  title.textContent = item.title;
-  builder.textContent = `Built by ${item.builder} • ${item.date}`;
-  
-  modal.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-  const modal = document.getElementById('lightboxModal');
-  modal.classList.add('hidden');
-  document.body.style.overflow = '';
+  }, 4000);
 }
 
 // ============================================
 // INITIALIZATION
 // ============================================
-
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('UC Minecraft website loaded!');
-  
-  updateServerStatus();
-  updateLeaderboard();
+  checkServerStatus();
+  loadLeaderboard();
   loadGallery();
   
-  setInterval(updateServerStatus, 30000);
+  // Update server status every 30 seconds
+  setInterval(checkServerStatus, 30000);
   
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-      updateServerStatus();
+  // Close modal on background click
+  document.getElementById('verificationModal').addEventListener('click', (e) => {
+    if (e.target.id === 'verificationModal') {
+      closeModal();
     }
   });
-});
-
-// Close modal on background click
-document.getElementById('verificationModal')?.addEventListener('click', (e) => {
-  if (e.target.id === 'verificationModal') {
-    closeVerificationModal();
-  }
-});
-
-// Close lightbox with ESC key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    closeLightbox();
-    closeVerificationModal();
-  }
+  
+  // Close modal with ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  });
 });
 </script>
 
