@@ -82,12 +82,12 @@
       height: 300px;
       z-index: -1;
       opacity: 0.6;
-      pointer-events: none;
+      animation: cloudFloat 120s linear infinite;
     }
 
     @keyframes cloudFloat {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
 
     .cloud {
@@ -151,7 +151,8 @@
       height: 200px;
       margin: 0 auto 30px;
       position: relative;
-      perspective: 800px;
+      transform-style: preserve-3d;
+      animation: float 3s ease-in-out infinite;
     }
 
     @keyframes float {
@@ -165,7 +166,6 @@
       position: relative;
       transform-style: preserve-3d;
       transform: rotateX(-20deg) rotateY(30deg);
-      animation: float 8s ease-in-out infinite;
     }
 
     .logo-cube-face {
@@ -180,7 +180,6 @@
       font-weight: bold;
       text-shadow: var(--text-shadow);
       box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
-      background: var(--uc-blue);
     }
 
     .logo-cube-face.front {
@@ -348,11 +347,6 @@
       box-shadow: 0 6px 0 rgba(0,0,0,0.5);
     }
 
-    .server-ip-box:active {
-      transform: translateY(3px);
-      box-shadow: 0 3px 0 rgba(0,0,0,0.5);
-    }
-
     .server-ip-box code {
       color: #10B981;
       font-size: 18px;
@@ -510,6 +504,7 @@
       background: var(--uc-gold);
       color: var(--uc-blue);
       border: 4px solid #000;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -881,8 +876,9 @@
       height: 50px;
       border: 5px solid rgba(255,255,255,0.2);
       border-top: 5px solid var(--uc-gold);
-      margin: 20px auto;
+      border-radius: 0;
       animation: spin 1s linear infinite;
+      margin: 20px auto;
     }
 
     @keyframes spin {
@@ -965,7 +961,6 @@
       .playtime-badge {
         width: 100%;
         text-align: center;
-        white-space: normal;
       }
 
       .toast {
@@ -1052,7 +1047,7 @@
     <div class="logo-3d">
       <div class="logo-cube">
         <div class="logo-cube-face front">UC</div>
-        <div class="logo-cube-face back">MC</div>
+        <div class="logo-cube-face back"></div>
         <div class="logo-cube-face right"></div>
         <div class="logo-cube-face left"></div>
         <div class="logo-cube-face top"></div>
@@ -1072,7 +1067,7 @@
     </div>
     
     <div class="player-count-display" id="playerCount">
-      <span>0</span>
+      <div class="spinner"></div>
     </div>
     <p style="text-align:center;font-size:12px;color:#aaa;">PLAYERS ONLINE</p>
     
@@ -1192,11 +1187,8 @@ let playerCount = 0;
 let leaderboardData = [];
 
 // ============================================
-// API CONFIGURATION - Use mock data since we don't have a real API
+// MOCK PLAYER DATA - NO API KEYS NEEDED
 // ============================================
-const USE_MOCK_DATA = true; // Set to false when you have a real API
-
-// Mock player data for demonstration
 const MOCK_PLAYER_DATA = [
   { username: 'Steve_UC', playtimeMinutes: 12450, uuid: 'steve-uc-1', firstJoin: '2025-01-15', lastSeen: '2025-03-20' },
   { username: 'Alex_Builder', playtimeMinutes: 8760, uuid: 'alex-builder-2', firstJoin: '2025-01-20', lastSeen: '2025-03-21' },
@@ -1210,25 +1202,15 @@ const MOCK_PLAYER_DATA = [
   { username: 'NetherWarrior', playtimeMinutes: 1320, uuid: 'nether-warrior-10', firstJoin: '2025-03-10', lastSeen: '2025-03-19' }
 ];
 
-// Gallery data
+// ============================================
+// GALLERY DATA - ORIGINAL IMAGES RESTORED
+// ============================================
 const galleryData = [
   {
     title: 'The Dreamcatcher',
     builder: 'yumihan',
-    image: 'https://via.placeholder.com/400x200/003262/FDB515?text=Dreamcatcher',
+    image: 'yumihan.png',
     date: 'Feb 2026'
-  },
-  {
-    title: 'UC Central Station',
-    builder: 'Steve_UC',
-    image: 'https://via.placeholder.com/400x200/5b9a4a/FFFFFF?text=Central+Station',
-    date: 'Mar 2026'
-  },
-  {
-    title: 'Golden Bear Castle',
-    builder: 'Alex_Builder',
-    image: 'https://via.placeholder.com/400x200/FDB515/003262?text=Golden+Castle',
-    date: 'Mar 2026'
   }
 ];
 
@@ -1237,19 +1219,18 @@ const galleryData = [
 // ============================================
 async function checkServerStatus() {
   try {
-    // Using a free Minecraft server status API
     const response = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
     const data = await response.json();
     
     serverOnline = data.online || false;
-    playerCount = data.players?.online || Math.floor(Math.random() * 20) + 5; // Random between 5-25 if unknown
+    playerCount = data.players?.online || 0;
     
     updateStatusUI();
   } catch (error) {
     console.error('Failed to check server status:', error);
-    // Simulate online with random player count
+    // Generate random player count for demo
     serverOnline = true;
-    playerCount = Math.floor(Math.random() * 15) + 8; // Random between 8-23
+    playerCount = Math.floor(Math.random() * 15) + 5;
     updateStatusUI();
   }
 }
@@ -1263,13 +1244,13 @@ function updateStatusUI() {
   if (serverOnline) {
     statusDot.className = 'status-dot';
     statusText.textContent = '✓ SERVER ONLINE';
-    playerCountEl.textContent = playerCount;
+    playerCountEl.innerHTML = playerCount;
     footerStatus.textContent = `Online - ${playerCount} player${playerCount !== 1 ? 's' : ''}`;
     footerStatus.style.color = '#10B981';
   } else {
     statusDot.className = 'status-dot offline';
     statusText.textContent = '✗ SERVER OFFLINE';
-    playerCountEl.textContent = '0';
+    playerCountEl.innerHTML = '0';
     footerStatus.textContent = 'Offline';
     footerStatus.style.color = '#EF4444';
   }
@@ -1284,37 +1265,12 @@ function formatPlaytime(minutes) {
   return `${hours}h ${mins}m`;
 }
 
-function formatDate(dateString) {
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  } catch {
-    return 'Unknown';
-  }
-}
-
 // ============================================
-// FETCH PLAYER DATA FROM SERVER
+// FETCH PLAYER DATA - USES MOCK DATA ONLY
 // ============================================
 async function fetchPlayerStats() {
-  // Use mock data for now
-  if (USE_MOCK_DATA) {
-    return processPlayerData(MOCK_PLAYER_DATA);
-  }
-  
-  try {
-    // Try to fetch from API
-    const response = await fetch('https://api.mcsrvstat.us/3/' + SERVER_IP);
-    if (response.ok) {
-      const data = await response.json();
-      // Note: mcsrvstat.us doesn't provide player stats, so we still need mock data for that
-      return processPlayerData(MOCK_PLAYER_DATA);
-    }
-    return processPlayerData(MOCK_PLAYER_DATA);
-  } catch (error) {
-    console.error('Failed to fetch player stats:', error);
-    return processPlayerData(MOCK_PLAYER_DATA);
-  }
+  // Always use mock data - no API keys needed
+  return processPlayerData(MOCK_PLAYER_DATA);
 }
 
 function processPlayerData(rawData) {
@@ -1322,23 +1278,20 @@ function processPlayerData(rawData) {
     return [];
   }
   
-  // Convert to standard format
   const processed = rawData.map(player => ({
-    uuid: player.uuid || player.id || `uuid-${player.username}`,
-    username: player.username || player.name || 'Unknown',
-    playtime: formatPlaytime(player.playtimeMinutes || player.playTime || player.totalPlaytime || 1000),
-    playtimeMinutes: player.playtimeMinutes || player.playTime || player.totalPlaytime || 1000,
-    firstJoin: player.firstJoin || player.joined || new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-    lastSeen: player.lastSeen || player.lastOnline || new Date().toISOString()
+    uuid: player.uuid || `uuid-${player.username}`,
+    username: player.username || 'Unknown',
+    playtime: formatPlaytime(player.playtimeMinutes || 1000),
+    playtimeMinutes: player.playtimeMinutes || 1000,
+    firstJoin: player.firstJoin || new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+    lastSeen: player.lastSeen || new Date().toISOString()
   }));
   
-  // Sort by playtime (descending)
   return processed.sort((a, b) => b.playtimeMinutes - a.playtimeMinutes);
 }
 
-// Get player skin URL
+// Get player skin URL - no API key required
 function getPlayerSkinUrl(uuid, username) {
-  // Use mc-heads API for reliable avatars
   return `https://mc-heads.net/avatar/${username || 'steve'}/64`;
 }
 
@@ -1348,7 +1301,6 @@ function getPlayerSkinUrl(uuid, username) {
 async function loadLeaderboard() {
   const container = document.getElementById('leaderboard');
   
-  // Show loading state
   container.innerHTML = `
     <div style="text-align:center;padding:50px;">
       <div class="spinner"></div>
@@ -1357,7 +1309,6 @@ async function loadLeaderboard() {
   `;
   
   try {
-    // Fetch player stats
     leaderboardData = await fetchPlayerStats();
     
     if (leaderboardData.length === 0) {
@@ -1370,21 +1321,18 @@ async function loadLeaderboard() {
       return;
     }
     
-    // Display top 10 players
     const topPlayers = leaderboardData.slice(0, 10);
     
     container.innerHTML = topPlayers.map((player, index) => {
       const actualRank = index + 1;
       const rankClass = actualRank === 1 ? 'rank-1' : actualRank === 2 ? 'rank-2' : actualRank === 3 ? 'rank-3' : '';
-      
       const skinUrl = getPlayerSkinUrl(player.uuid, player.username);
       
-      // Calculate days since first join
       let daysSinceJoin = '?';
       try {
         daysSinceJoin = Math.floor((new Date() - new Date(player.firstJoin)) / (1000 * 60 * 60 * 24));
       } catch {
-        daysSinceJoin = Math.floor(Math.random() * 60) + 10; // Random fallback
+        daysSinceJoin = Math.floor(Math.random() * 60) + 10;
       }
       
       return `
@@ -1401,8 +1349,6 @@ async function loadLeaderboard() {
       `;
     }).join('');
     
-    showToast('✓ Leaderboard updated!');
-    
   } catch (error) {
     console.error('Error loading leaderboard:', error);
     container.innerHTML = `
@@ -1418,12 +1364,12 @@ async function loadLeaderboard() {
 }
 
 // ============================================
-// GALLERY FUNCTIONS
+// GALLERY FUNCTIONS - ORIGINAL IMAGE PATHS
 // ============================================
 function loadGallery() {
   const container = document.getElementById('gallery');
   
-  if (!galleryData || galleryData.length === 0) {
+  if (galleryData.length === 0) {
     container.innerHTML = `
       <div style="text-align:center;padding:50px;grid-column:1/-1;">
         <i class="fas fa-camera" style="font-size:48px;color:#666;margin-bottom:20px;"></i>
@@ -1436,11 +1382,11 @@ function loadGallery() {
   container.innerHTML = galleryData.map(item => `
     <div class="gallery-card">
       <img src="${item.image}" alt="${item.title}" class="gallery-image"
-           onerror="this.src='https://via.placeholder.com/400x200/333/666?text=Build+Image'">
+           onerror="this.src='https://via.placeholder.com/400x200/003262/FDB515?text=${item.title.replace(' ', '+')}'">
       <div class="gallery-info">
         <div class="gallery-title">${item.title}</div>
         <div class="gallery-builder">
-          <i class="fas fa-user"></i> ${item.builder} • ${item.date || '2026'}
+          <i class="fas fa-user"></i> ${item.builder} • ${item.date}
         </div>
       </div>
     </div>
@@ -1454,7 +1400,7 @@ function copyIP() {
   navigator.clipboard.writeText(SERVER_IP).then(() => {
     showToast('✓ Server IP copied!');
   }).catch(() => {
-    // Fallback
+    // Fallback for older browsers
     const textArea = document.createElement('textarea');
     textArea.value = SERVER_IP;
     document.body.appendChild(textArea);
@@ -1474,15 +1420,12 @@ function closeModal() {
 }
 
 function showSubmitInfo() {
-  showToast('📸 Take screenshots\n🔗 Upload to imgur\n💬 Send link to admins on Discord\n📝 Include your MC username');
+  showToast('TO SUBMIT YOUR BUILD:\n\n1. Take screenshots\n2. Upload to imgur\n3. Send link to admins on Discord\n4. Include your MC username');
 }
 
 function showToast(message) {
-  // Remove existing toast
   const existing = document.querySelector('.toast');
-  if (existing) {
-    existing.remove();
-  }
+  if (existing) existing.remove();
   
   const toast = document.createElement('div');
   toast.className = 'toast';
@@ -1493,14 +1436,13 @@ function showToast(message) {
     toast.style.opacity = '0';
     toast.style.transition = 'opacity 0.3s';
     setTimeout(() => toast.remove(), 300);
-  }, 3000);
+  }, 4000);
 }
 
 // ============================================
 // INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize components
   checkServerStatus();
   loadLeaderboard();
   loadGallery();
@@ -1522,12 +1464,6 @@ document.addEventListener('DOMContentLoaded', () => {
       closeModal();
     }
   });
-  
-  // Initialize player count display
-  const playerCountEl = document.getElementById('playerCount');
-  if (playerCountEl) {
-    playerCountEl.innerHTML = '<span>0</span>';
-  }
 });
 </script>
 
