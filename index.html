@@ -1,13 +1,3 @@
-# In plugins/Plan/config.yml
-WebServer:
-  Enabled: true
-  Port: 8805
-  Cors:
-    Enabled: true
-    Origins:
-      - "*"
-Here's the full code:
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +51,6 @@ Here's the full code:
       overflow-x: hidden;
     }
 
-    /* Background */
     body::before {
       content: '';
       position: fixed;
@@ -113,9 +102,6 @@ Here's the full code:
       padding: 20px;
     }
 
-    /* ============================================
-       HEADER
-    ============================================ */
     header {
       text-align: center;
       padding: 60px 20px 40px;
@@ -194,9 +180,6 @@ Here's the full code:
       font-style: italic;
     }
 
-    /* ============================================
-       CARDS
-    ============================================ */
     .academic-card {
       background: rgba(255, 255, 255, 0.95);
       border-radius: 4px;
@@ -306,9 +289,6 @@ Here's the full code:
       font-size: 16px;
     }
 
-    /* ============================================
-       BUTTONS
-    ============================================ */
     .btn-group {
       display: flex;
       flex-wrap: wrap;
@@ -340,9 +320,6 @@ Here's the full code:
     .uc-btn.secondary:hover { background: #e6a000; transform: translateY(-2px); }
     .uc-btn.discord { background: #5865F2; color: #fff; }
 
-    /* ============================================
-       SECTIONS
-    ============================================ */
     .info-section {
       margin: 50px auto;
     }
@@ -359,7 +336,6 @@ Here's the full code:
       width: 100%;
     }
 
-    /* Steps */
     .steps-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -380,9 +356,6 @@ Here's the full code:
     .step-card h3 { font-size: 18px; color: #fff; margin-bottom: 10px; }
     .step-card p { font-size: 13px; color: var(--text-dim); }
 
-    /* ============================================
-       LEADERBOARD (Plan Plugin Data)
-    ============================================ */
     .ranking-table {
       width: 100%;
       border-collapse: collapse;
@@ -411,9 +384,6 @@ Here's the full code:
     .rank-2 { color: #C0C0C0; }
     .rank-3 { color: #CD7F32; }
 
-    /* ============================================
-       GALLERY (Click to Zoom)
-    ============================================ */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -463,9 +433,6 @@ Here's the full code:
       text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
     }
 
-    /* ============================================
-       IMAGE MODAL (Lightbox)
-    ============================================ */
     .image-modal {
       display: none;
       position: fixed;
@@ -504,9 +471,6 @@ Here's the full code:
       text-shadow: 2px 2px 0 #000;
     }
 
-    /* ============================================
-       MODAL & TOAST
-    ============================================ */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -635,7 +599,6 @@ Here's the full code:
 
 <div class="container">
 
-  <!-- Header -->
   <header>
     <div class="campanile">
       <div class="tower-base">
@@ -647,7 +610,6 @@ Here's the full code:
     <p class="subtitle">Department of Block Studies • Official SMP</p>
   </header>
 
-  <!-- Server Status -->
   <div class="academic-card">
     <div class="status-row">
       <div>
@@ -672,7 +634,6 @@ Here's the full code:
     </div>
   </div>
 
-  <!-- Buttons -->
   <div class="btn-group">
     <button onclick="openModal()" class="uc-btn primary">
       <i class="fas fa-id-card"></i> Verify Account
@@ -682,7 +643,6 @@ Here's the full code:
     </a>
   </div>
 
-  <!-- How to Join -->
   <div class="info-section">
     <h2 class="section-title">Enrollment</h2>
     <div style="text-align:center; margin-bottom:30px;">
@@ -711,7 +671,6 @@ Here's the full code:
     </div>
   </div>
 
-  <!-- Leaderboard (Plan Plugin) -->
   <div class="info-section">
     <h2 class="section-title">Class Rankings</h2>
     <p style="text-align:center; color:var(--text-dim); margin-bottom:30px;">Ranked by Total Playtime (Hours)</p>
@@ -738,13 +697,11 @@ Here's the full code:
     </div>
   </div>
 
-  <!-- Gallery -->
   <div class="info-section">
     <h2 class="section-title">Community Builds</h2>
     <p style="text-align:center; color:var(--text-dim); margin-bottom:30px;">Click an image to enlarge</p>
 
     <div class="gallery-grid" id="galleryContainer">
-      <!-- Gallery items will be injected here -->
     </div>
 
     <div style="text-align:center; margin-top:30px;">
@@ -770,7 +727,9 @@ Here's the full code:
   const SERVER_IP = 'ucminecraft.artisen.xyz';
   const PLAN_API_URL = "http://217.216.40.184:8805/server/Server%201/players";
 
-  // Gallery Data
+  // Using a CORS proxy to bypass browser restrictions
+  const CORS_PROXY = "https://corsproxy.io/?";
+
   const GALLERY_DATA = [
     { title: 'The Dreamcatcher', image: 'yumihan.png' }
   ];
@@ -804,10 +763,12 @@ Here's the full code:
     }
   }
 
-  // Fetch from Plan Plugin API
+  // Fetch from Plan Plugin API using CORS proxy
   async function fetchPlayerStats() {
     try {
-      const response = await fetch(PLAN_API_URL);
+      // Use CORS proxy to bypass browser restrictions
+      const proxyUrl = CORS_PROXY + encodeURIComponent(PLAN_API_URL);
+      const response = await fetch(proxyUrl);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -815,12 +776,10 @@ Here's the full code:
 
       const data = await response.json();
 
-      // Check if we got valid data
       if (!Array.isArray(data) || data.length === 0) {
         throw new Error("Empty response - no player data");
       }
 
-      // Process Plan Plugin data
       const processed = data.map(player => {
         const ms = player.playtime || 0;
         const hours = Math.floor(ms / 3600000);
@@ -832,7 +791,6 @@ Here's the full code:
         };
       });
 
-      // Sort by playtime (descending)
       processed.sort((a, b) => b.rawTime - a.rawTime);
 
       return processed;
@@ -864,23 +822,13 @@ Here's the full code:
         }).join('');
 
       } catch (error) {
-        // Show error with details
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:30px; color:#aaa;">
-          <strong style="color:#ff6b6b;">Error: ${error.message}</strong><br><br>
-          <span style="font-size:11px;">This is a CORS error. You need to enable CORS in your Plan config:</span><br><br>
-          <code style="background:#222; padding:10px; border-radius:4px; display:inline-block; font-size:10px;">
-          WebServer:<br>
-          &nbsp;&nbsp;Cors:<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;Enabled: true<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;Origins:<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "*"
-          </code>
+          <strong style="color:#ff6b6b;">Error: ${error.message}</strong>
         </td></tr>`;
       }
     }, 800);
   }
 
-  // Load Gallery (with click-to-zoom)
   function loadGallery() {
     const container = document.getElementById('galleryContainer');
     container.innerHTML = GALLERY_DATA.map(item => `
@@ -895,7 +843,6 @@ Here's the full code:
     `).join('');
   }
 
-  // Image Modal Functions
   function openImageModal(imageSrc, caption) {
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImage');
@@ -910,7 +857,6 @@ Here's the full code:
     document.getElementById('imageModal').classList.remove('active');
   }
 
-  // Utilities
   function copyIP() {
     navigator.clipboard.writeText(SERVER_IP).then(() => showToast());
   }
@@ -928,7 +874,6 @@ Here's the full code:
     alert("TO SUBMIT YOUR BUILD:\n\n1. Take screenshots\n2. Upload to imgur\n3. Send link to admins on Discord");
   }
 
-  // Init
   document.addEventListener('DOMContentLoaded', () => {
     checkStatus();
     loadLeaderboard();
