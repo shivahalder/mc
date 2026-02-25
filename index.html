@@ -725,14 +725,16 @@
   // CONFIGURATION
   // ============================================
   const SERVER_IP = 'ucminecraft.artisen.xyz';
-  const PLAN_API_URL = "http://217.216.40.184:8805/server/Server%201/players";
 
-  // Try different CORS proxies
-  const CORS_PROXIES = [
-    "https://api.allorigins.win/raw?url=",
-    "https://corsproxy.io/?",
-    ""
+  // Try different Plan API JSON endpoints
+  const PLAN_API_URLS = [
+    "http://217.216.40.184:8805/Plan/api/v1/players",
+    "http://217.216.40.184:8805/Plan/api/v1/server/Server%201/players",
+    "http://217.216.40.184:8805/api/v1/players",
+    "http://217.216.40.184:8805/players.json"
   ];
+
+  const CORS_PROXY = "https://api.allorigins.win/raw?url=";
 
   const GALLERY_DATA = [
     { title: 'The Dreamcatcher', image: 'yumihan.png' }
@@ -771,10 +773,10 @@
   async function fetchPlayerStats() {
     let lastError = null;
 
-    for (let i = 0; i < CORS_PROXIES.length; i++) {
-      const proxy = CORS_PROXIES[i];
+    for (const apiUrl of PLAN_API_URLS) {
       try {
-        let url = proxy + encodeURIComponent(PLAN_API_URL);
+        const url = CORS_PROXY + encodeURIComponent(apiUrl);
+        console.log("Trying:", url);
 
         const response = await fetch(url);
 
@@ -783,18 +785,37 @@
         }
 
         const text = await response.text();
+        console.log("Response:", text.substring(0, 500));
+
         const data = JSON.parse(text);
 
-        if (!Array.isArray(data) || data.length === 0) {
-          throw new Error("Empty response - no player data");
+        // Check if we got valid data
+        if (!data || typeof data !== 'object') {
+          throw new Error("Invalid JSON response");
         }
 
-        const processed = data.map(player => {
-          const ms = player.playtime || 0;
+        // Plan API returns different structures, try to handle them
+        let players = [];
+
+        if (Array.isArray(data)) {
+          players = data;
+        } else if (data.players) {
+          players = data.players;
+        } else if (data.results) {
+          players = data.results;
+        }
+
+        if (players.length === 0) {
+          throw new Error("No player data found");
+        }
+
+        const processed = players.map(player => {
+          // Handle different field names
+          const ms = player.playtime || player.playTime || player.totalPlaytime || 0;
           const hours = Math.floor(ms / 3600000);
           const minutes = Math.floor((ms % 3600000) / 60000);
           return {
-            name: player.name,
+            name: player.name || player.playerName || player.username || "Unknown",
             time: `${hours}h ${minutes}m`,
             rawTime: ms
           };
@@ -804,7 +825,7 @@
         return processed;
 
       } catch (error) {
-        console.log(`Proxy ${i} failed:`, error.message);
+        console.log(`Failed:`, error.message);
         lastError = error;
         continue;
       }
@@ -836,7 +857,7 @@
       } catch (error) {
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:30px; color:#aaa;">
           <strong style="color:#ff6b6b;">Error: ${error.message}</strong><br><br>
-          <span style="font-size:11px;">Try restarting your Minecraft server to apply CORS.</span>
+          <span style="font-size:11px;">Check browser console (F12) for details.</span>
         </td></tr>`;
       }
     }, 800);
