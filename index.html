@@ -727,8 +727,12 @@
   const SERVER_IP = 'ucminecraft.artisen.xyz';
   const PLAN_API_URL = "http://217.216.40.184:8805/server/Server%201/players";
 
-  // Using a CORS proxy to bypass browser restrictions
-  const CORS_PROXY = "https://corsproxy.io/?";
+  // Try different CORS proxies
+  const CORS_PROXIES = [
+    "https://api.allorigins.win/raw?url=",
+    "https://corsproxy.io/?",
+    ""
+  ];
 
   const GALLERY_DATA = [
     { title: 'The Dreamcatcher', image: 'yumihan.png' }
@@ -763,42 +767,50 @@
     }
   }
 
-  // Fetch from Plan Plugin API using CORS proxy
+  // Fetch from Plan Plugin API
   async function fetchPlayerStats() {
-    try {
-      // Use CORS proxy to bypass browser restrictions
-      const proxyUrl = CORS_PROXY + encodeURIComponent(PLAN_API_URL);
-      const response = await fetch(proxyUrl);
+    let lastError = null;
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    for (let i = 0; i < CORS_PROXIES.length; i++) {
+      const proxy = CORS_PROXIES[i];
+      try {
+        let url = proxy + encodeURIComponent(PLAN_API_URL);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const text = await response.text();
+        const data = JSON.parse(text);
+
+        if (!Array.isArray(data) || data.length === 0) {
+          throw new Error("Empty response - no player data");
+        }
+
+        const processed = data.map(player => {
+          const ms = player.playtime || 0;
+          const hours = Math.floor(ms / 3600000);
+          const minutes = Math.floor((ms % 3600000) / 60000);
+          return {
+            name: player.name,
+            time: `${hours}h ${minutes}m`,
+            rawTime: ms
+          };
+        });
+
+        processed.sort((a, b) => b.rawTime - a.rawTime);
+        return processed;
+
+      } catch (error) {
+        console.log(`Proxy ${i} failed:`, error.message);
+        lastError = error;
+        continue;
       }
-
-      const data = await response.json();
-
-      if (!Array.isArray(data) || data.length === 0) {
-        throw new Error("Empty response - no player data");
-      }
-
-      const processed = data.map(player => {
-        const ms = player.playtime || 0;
-        const hours = Math.floor(ms / 3600000);
-        const minutes = Math.floor((ms % 3600000) / 60000);
-        return {
-          name: player.name,
-          time: `${hours}h ${minutes}m`,
-          rawTime: ms
-        };
-      });
-
-      processed.sort((a, b) => b.rawTime - a.rawTime);
-
-      return processed;
-
-    } catch (error) {
-      console.error("Plan API Error:", error);
-      throw error;
     }
+
+    throw lastError;
   }
 
   async function loadLeaderboard() {
@@ -823,7 +835,8 @@
 
       } catch (error) {
         tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:30px; color:#aaa;">
-          <strong style="color:#ff6b6b;">Error: ${error.message}</strong>
+          <strong style="color:#ff6b6b;">Error: ${error.message}</strong><br><br>
+          <span style="font-size:11px;">Try restarting your Minecraft server to apply CORS.</span>
         </td></tr>`;
       }
     }, 800);
