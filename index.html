@@ -728,10 +728,9 @@
 
   // Try different Plan API JSON endpoints
   const PLAN_API_URLS = [
-    "http://217.216.40.184:8805/Plan/api/v1/players",
-    "http://217.216.40.184:8805/Plan/api/v1/server/Server%201/players",
-    "http://217.216.40.184:8805/api/v1/players",
-    "http://217.216.40.184:8805/players.json"
+    "http://217.216.40.184:8805/v1/players",
+    "http://217.216.40.184:8805/v1/server/Plan/players",
+    "http://217.216.40.184:8805/v1/server/Server%201/players"
   ];
 
   const CORS_PROXY = "https://api.allorigins.win/raw?url=";
@@ -789,12 +788,10 @@
 
         const data = JSON.parse(text);
 
-        // Check if we got valid data
         if (!data || typeof data !== 'object') {
           throw new Error("Invalid JSON response");
         }
 
-        // Plan API returns different structures, try to handle them
         let players = [];
 
         if (Array.isArray(data)) {
@@ -810,7 +807,6 @@
         }
 
         const processed = players.map(player => {
-          // Handle different field names
           const ms = player.playtime || player.playTime || player.totalPlaytime || 0;
           const hours = Math.floor(ms / 3600000);
           const minutes = Math.floor((ms % 3600000) / 60000);
