@@ -6,10 +6,6 @@
   <title>UC Minecraft | Official SMP</title>
   <meta name="title" content="UC Minecraft | Official University Server">
   <meta name="description" content="Join the official UC Minecraft SMP server!">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ucminecraft.artisen.xyz/">
-  <meta property="og:title" content="UC Minecraft | Official University Server">
-  <meta property="og:description" content="Join the premier SMP server for UC students and fans. Connect now!">
   <link rel="icon" type="image/png" href="favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -149,12 +145,15 @@
 <div id="toast" class="toast">Copied to clipboard!</div>
 <script>
 const SERVER_IP = 'ucminecraft.artisen.xyz';
-const API_URLS = [
-  "http://217.216.40.184:8805/players.json",
-  "http://217.216.40.184:8805/server/Server%201/players.json",
-  "http://217.216.40.184:8805/Plan/api/v1/players",
-  "http://217.216.40.184:8805/api/v1/players"
+
+// URLs to try - HTML pages that contain player data
+const PAGE_URLS = [
+  "http://217.216.40.184:8805/server/Server%201/players",
+  "http://217.216.40.184:8805/players"
 ];
+
+const CORS_PROXY = "https://api.allorigins.win/raw?url=";
+
 const GALLERY_DATA = [{ title: 'The Dreamcatcher', image: 'yumihan.png' }];
 
 async function checkStatus() {
@@ -165,37 +164,87 @@ async function checkStatus() {
     const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
     const data = await res.json();
     if(data.online) { statusDot.classList.add('online'); statusText.textContent = "ONLINE"; statusText.style.color = "#10B981"; playerCount.textContent = data.players.online; }
-  } catch (e) { statusDot.classList.add('online'); statusText.textContent = "ONLINE"; statusText.style.color = "#10B981"; playerCount.textContent = "?"; }
+  } catch (e) { statusDot.classList.add('online'); statusText.textContent = "ONLINE"; playerCount.textContent = "?"; }
+}
+
+// Parse the HTML page to extract player data
+function parsePlayerList(html) {
+  const players = [];
+
+  // Try to find table rows with player data
+  // The Plan plugin HTML has tables with player info
+  const rowRegex = /<tr[^>]*>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>/g;
+
+  let match;
+  while ((match = rowRegex.exec(html)) !== null) {
+    const name = match[1].trim();
+    const playtime = match[2].trim();
+
+    // Skip header rows
+    if (name && !name.includes('Name') && !name.includes('Rank') && name.length > 0) {
+      players.push({ name: name, time: playtime });
+    }
+  }
+
+  // Alternative: try finding player names in data attributes
+  const dataNameRegex = /data-name="([^"]+)"/g;
+  while ((match = dataNameRegex.exec(html)) !== null) {
+    const name = match[1];
+    if (!players.find(p => p.name === name)) {
+      players.push({ name: name, time: "Unknown" });
+    }
+  }
+
+  return players;
 }
 
 async function fetchPlayerStats() {
-  for (const apiUrl of API_URLS) {
+  for (const pageUrl of PAGE_URLS) {
     try {
-      const response = await fetch(apiUrl);
+      // Try with CORS proxy
+      const url = CORS_PROXY + encodeURIComponent(pageUrl);
+      const response = await fetch(url);
+
       if (!response.ok) continue;
-      const text = await response.text();
-      if (!text.startsWith('[') && !text.startsWith('{')) continue;
-      const data = JSON.parse(text);
-      let players = Array.isArray(data) ? data : (data.players || data.results || []);
-      if (players.length === 0) continue;
-      return players.map(p => {
-        const ms = p.playtime || p.playTime || 0;
-        return { name: p.name || p.playerName || "Unknown", time: `${Math.floor(ms/3600000)}h${Math.floor((ms%3600000)/60000)}m`, rawTime: ms };
-      }).sort((a,b) => b.rawTime - a.rawTime);
-    } catch(e) { continue; }
+
+      const html = await response.text();
+
+      // Parse the HTML
+      const players = parsePlayerList(html);
+
+      if (players.length > 0) {
+        return players;
+      }
+    } catch(e) {
+      console.log("Failed:", e.message);
+      continue;
+    }
   }
-  throw new Error("No working API found");
+
+  throw new Error("Could not parse player data from Plan page");
 }
 
 async function loadLeaderboard() {
   const tbody = document.getElementById('leaderboardBody');
   tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Loading...</td></tr>';
-  try {
-    const players = await fetchPlayerStats();
-    tbody.innerHTML = players.map((p, i) => `<tr><td class="rank-col rank-${i+1}">#${i+1}</td><td style="font-weight:bold;color:#fff">${p.name}</td><td style="font-family:'Press Start 2P';font-size:10px;color:var(--uc-gold)">${p.time}</td></tr>`).join('');
-  } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#aaa">Error: ${e.message}<br><br>Try enabling JSON export in Plan config</td></tr>`;
-  }
+
+  setTimeout(async () => {
+    try {
+      const players = await fetchPlayerStats();
+
+      if (players.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#aaa">No player data found. Make sure players have logged in.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = players.map((p, i) => {
+        let rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
+        return `<tr><td class="rank-col ${rankClass}">#${i+1}</td><td style="font-weight:bold;color:#fff">${p.name}</td><td style="font-family:'Press Start 2P';font-size:10px;color:var(--uc-gold)">${p.time}</td></tr>`;
+      }).join('');
+    } catch(e) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#aaa">Error: ${e.message}<br><br>Check that Plan webserver is running</td></tr>`;
+    }
+  }, 500);
 }
 
 function loadGallery() {
