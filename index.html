@@ -448,12 +448,6 @@
       text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
     }
 
-    .gallery-builder {
-      font-size: 12px;
-      color: #aaa;
-      font-family: 'Merriweather', serif;
-    }
-
     /* ============================================
        MODAL & TOAST
     ============================================ */
@@ -714,13 +708,12 @@
   const SERVER_IP = 'ucminecraft.artisen.xyz';
 
   // ============================================
-  // IMPORTANT: SET YOUR PLAN API URL HERE
-  // If you don't have the plugin, leave it empty to use mock data.
-  // Example: const PLAN_API_URL = "http://localhost:8000/Plan/api/v1/players";
-  const PLAN_API_URL = ""; 
+  // PLAN PLUGIN API CONFIGURATION
+  // ============================================
+  const PLAN_API_URL = "http://217.216.40.184:8805/Plan/api/v1/players";
   // ============================================
 
-  // Mock Fallback Data
+  // Mock Fallback Data (only shows if API fails)
   const MOCK_LEADERBOARD = [
     { name: 'Steve_UC', time: '207h 30m' },
     { name: 'Alex_Builder', time: '146h 00m' },
@@ -732,12 +725,12 @@
     { name: 'PvPMaster', time: '19h 30m' }
   ];
 
-  // Gallery Data (Original images restored)
+  // Gallery Data (Removed "Built by")
   const GALLERY_DATA = [
-    { title: 'The Dreamcatcher', builder: 'yumihan', image: 'yumihan.png' },
-    { title: 'Modern Library', builder: 'BookWorm99', image: 'https://via.placeholder.com/400x200/003262/FDB515?text=Library+Build' },
-    { title: 'Redstone Computer', builder: 'TechMaster', image: 'https://via.placeholder.com/400x200/003262/FDB515?text=Redstone+CPU' },
-    { title: 'The Golden Gate', builder: 'BridgeBuilder', image: 'https://via.placeholder.com/400x200/003262/FDB515?text=Golden+Gate' }
+    { title: 'The Dreamcatcher', image: 'yumihan.png' },
+    { title: 'Modern Library', image: 'https://via.placeholder.com/400x200/003262/FDB515?text=Library+Build' },
+    { title: 'Redstone Computer', image: 'https://via.placeholder.com/400x200/003262/FDB515?text=Redstone+CPU' },
+    { title: 'The Golden Gate', image: 'https://via.placeholder.com/400x200/003262/FDB515?text=Golden+Gate' }
   ];
 
   // ============================================
@@ -769,50 +762,37 @@
     }
   }
 
-  // Fetch from Plan Plugin or Mock Data
+  // Fetch from Plan Plugin API
   async function fetchPlayerStats() {
-    if (PLAN_API_URL && PLAN_API_URL.trim() !== "") {
-      try {
-        const response = await fetch(PLAN_API_URL);
-        if (!response.ok) throw new Error('Network response was not ok');
+    try {
+      const response = await fetch(PLAN_API_URL);
+      if (!response.ok) throw new Error('Network response was not ok');
 
-        const data = await response.json();
+      const data = await response.json();
 
-        // Plan Plugin usually returns an array of players.
-        // We need to map it to { name: '...', time: '...' }
-        // Depending on Plan version, structure varies, but usually it's:
-        // [ { "uuid": "...", "name": "Player", "playtime": 3600000 (ms) }, ... ]
+      // Process Plan Plugin data
+      // Plan returns players with playtime in milliseconds
+      const processed = data.map(player => {
+        const ms = player.playtime || 0;
+        const hours = Math.floor(ms / 3600000);
+        const minutes = Math.floor((ms % 3600000) / 60000);
+        return {
+          name: player.name,
+          time: `${hours}h ${minutes}m`,
+          rawTime: ms // for sorting
+        };
+      });
 
-        const processed = data.map(player => {
-          const ms = player.playtime || 0;
-          const hours = Math.floor(ms / 3600000);
-          const minutes = Math.floor((ms % 3600000) / 60000);
-          return {
-            name: player.name,
-            time: `${hours}h ${minutes}m`
-          };
-        });
+      // Sort by playtime (descending)
+      processed.sort((a, b) => b.rawTime - a.rawTime);
 
-        // Sort by playtime (approximate sort on string if exact math needed, but this works for display)
-        return processed.sort((a, b) => {
-            // Re-parse for sorting
-            const timeA = parseTime(a.time);
-            const timeB = parseTime(b.time);
-            return timeB - timeA;
-        });
+      return processed;
 
-      } catch (error) {
-        console.error("Failed to fetch Plan data:", error);
-      }
+    } catch (error) {
+      console.error("Failed to fetch Plan data:", error);
+      console.log("Falling back to mock data...");
+      return MOCK_LEADERBOARD;
     }
-    return MOCK_LEADERBOARD;
-  }
-
-  function parseTime(timeStr) {
-    // Helper to convert "10h 30m" to total minutes for sorting
-    const h = parseInt(timeStr.split('h')[0]) || 0;
-    const m = parseInt(timeStr.split('h')[1]?.replace('m','')) || 0;
-    return (h * 60) + m;
   }
 
   async function loadLeaderboard() {
@@ -822,6 +802,12 @@
     // Simulate network delay slightly for effect
     setTimeout(async () => {
       const players = await fetchPlayerStats();
+
+      if (players.length === 0 || (players[0].name === 'Steve_UC' && players[0].time === '207h 30m')) {
+        // If we got mock data, show a message
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:30px; color:#aaa;">No player data available. Make sure Plan plugin is installed and configured.</td></tr>';
+        return;
+      }
 
       tbody.innerHTML = players.map((player, index) => {
         let rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
@@ -837,7 +823,7 @@
     }, 800);
   }
 
-  // Load Gallery
+  // Load Gallery (without "Built by")
   function loadGallery() {
     const container = document.getElementById('galleryContainer');
     container.innerHTML = GALLERY_DATA.map(item => `
@@ -846,9 +832,6 @@
              onerror="this.src='https://via.placeholder.com/400x200/333/fff?text=Image+Error'">
         <div class="gallery-info">
           <div class="gallery-title">${item.title}</div>
-          <div class="gallery-builder">
-            <i class="fas fa-user"></i> Built by ${item.builder}
-          </div>
         </div>
       </div>
     `).join('');
