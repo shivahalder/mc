@@ -1,3 +1,13 @@
+# In plugins/Plan/config.yml
+WebServer:
+  Enabled: true
+  Port: 8805
+  Cors:
+    Enabled: true
+    Origins:
+      - "*"
+Here's the full code:
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -758,26 +768,9 @@
   // CONFIGURATION
   // ============================================
   const SERVER_IP = 'ucminecraft.artisen.xyz';
-
-  // ============================================
-  // PLAN PLUGIN API CONFIGURATION
-  // ============================================
   const PLAN_API_URL = "http://217.216.40.184:8805/server/Server%201/players";
-  // ============================================
 
-  // Mock Fallback Data (only shows if API fails)
-  const MOCK_LEADERBOARD = [
-    { name: 'Steve_UC', time: '207h 30m' },
-    { name: 'Alex_Builder', time: '146h 00m' },
-    { name: 'Miner_Joe', time: '90h 45m' },
-    { name: 'RedstonePro', time: '53h 20m' },
-    { name: 'CreeperKiller', time: '42h 10m' },
-    { name: 'Architect_99', time: '33h 15m' },
-    { name: 'FarmKing', time: '28h 50m' },
-    { name: 'PvPMaster', time: '19h 30m' }
-  ];
-
-  // Gallery Data (Only The Dreamcatcher)
+  // Gallery Data
   const GALLERY_DATA = [
     { title: 'The Dreamcatcher', image: 'yumihan.png' }
   ];
@@ -815,12 +808,19 @@
   async function fetchPlayerStats() {
     try {
       const response = await fetch(PLAN_API_URL);
-      if (!response.ok) throw new Error('Network response was not ok');
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
 
       const data = await response.json();
 
+      // Check if we got valid data
+      if (!Array.isArray(data) || data.length === 0) {
+        throw new Error("Empty response - no player data");
+      }
+
       // Process Plan Plugin data
-      // Plan returns players with playtime in milliseconds
       const processed = data.map(player => {
         const ms = player.playtime || 0;
         const hours = Math.floor(ms / 3600000);
@@ -828,7 +828,7 @@
         return {
           name: player.name,
           time: `${hours}h ${minutes}m`,
-          rawTime: ms // for sorting
+          rawTime: ms
         };
       });
 
@@ -838,9 +838,8 @@
       return processed;
 
     } catch (error) {
-      console.error("Failed to fetch Plan data:", error);
-      console.log("Falling back to mock data...");
-      return MOCK_LEADERBOARD;
+      console.error("Plan API Error:", error);
+      throw error;
     }
   }
 
@@ -848,27 +847,36 @@
     const tbody = document.getElementById('leaderboardBody');
     tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:40px;"><div class="spinner" style="margin:0 auto; border-top-color:var(--uc-gold);"></div></td></tr>';
 
-    // Simulate network delay slightly for effect
     setTimeout(async () => {
-      const players = await fetchPlayerStats();
+      try {
+        const players = await fetchPlayerStats();
 
-      if (players.length === 0 || (players[0].name === 'Steve_UC' && players[0].time === '207h 30m')) {
-        // If we got mock data, show a message
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:30px; color:#aaa;">No player data available. Make sure Plan plugin is installed and configured.</td></tr>';
-        return;
+        tbody.innerHTML = players.map((player, index) => {
+          let rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+
+          return `
+            <tr>
+              <td class="rank-col ${rankClass}">#${index + 1}</td>
+              <td style="font-weight:bold; color:#fff;">${player.name}</td>
+              <td style="font-family:'Press Start 2P'; font-size:10px; color:var(--uc-gold);">${player.time}</td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (error) {
+        // Show error with details
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:30px; color:#aaa;">
+          <strong style="color:#ff6b6b;">Error: ${error.message}</strong><br><br>
+          <span style="font-size:11px;">This is a CORS error. You need to enable CORS in your Plan config:</span><br><br>
+          <code style="background:#222; padding:10px; border-radius:4px; display:inline-block; font-size:10px;">
+          WebServer:<br>
+          &nbsp;&nbsp;Cors:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;Enabled: true<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;Origins:<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- "*"
+          </code>
+        </td></tr>`;
       }
-
-      tbody.innerHTML = players.map((player, index) => {
-        let rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
-
-        return `
-          <tr>
-            <td class="rank-col ${rankClass}">#${index + 1}</td>
-            <td style="font-weight:bold; color:#fff;">${player.name}</td>
-            <td style="font-family:'Press Start 2P'; font-size:10px; color:var(--uc-gold);">${player.time}</td>
-          </tr>
-        `;
-      }).join('');
     }, 800);
   }
 
@@ -936,7 +944,7 @@
       }
     });
   });
-
 </script>
+
 </body>
 </html>
