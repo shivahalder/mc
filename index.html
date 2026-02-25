@@ -18,32 +18,9 @@
     .pixel-font { font-family: 'Press Start 2P', cursive; }
     .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
     header { text-align: center; padding: 40px 20px; }
-
-    /* NEW - Logo Banner */
-    .logo-banner {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto 20px;
-      background: linear-gradient(180deg, var(--uc-blue) 0%, var(--uc-blue-dark) 100%);
-      border: 4px solid var(--uc-gold);
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 0 30px rgba(253, 181, 21, 0.3), inset 0 0 20px rgba(0,0,0,0.3);
-    }
-    .logo-banner img {
-      width: 100%;
-      height: auto;
-      image-rendering: pixelated;
-    }
-    .logo-text {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 24px;
-      color: #fff;
-      text-shadow: 3px 3px 0 var(--uc-gold), -1px -1px 0 #000;
-      margin-top: 10px;
-    }
+    .logo-banner { width: 100%; max-width: 600px; margin: 0 auto 20px; background: linear-gradient(180deg, var(--uc-blue) 0%, var(--uc-blue-dark) 100%); border: 4px solid var(--uc-gold); border-radius: 8px; padding: 20px; box-shadow: 0 0 30px rgba(253, 181, 21, 0.3), inset 0 0 20px rgba(0,0,0,0.3); }
+    .logo-text { font-family: 'Press Start 2P', cursive; font-size: 24px; color: #fff; text-shadow: 3px 3px 0 var(--uc-gold), -1px -1px 0 #000; margin-top: 10px; }
     .logo-text span { color: var(--uc-gold); }
-
     .subtitle { font-size: 18px; color: var(--text-dim); font-style: italic; margin-top: 10px; }
     .academic-card { background: rgba(255, 255, 255, 0.95); border-radius: 4px; padding: 40px; margin: 40px auto; max-width: 700px; color: #333; border-top: 6px solid var(--uc-blue); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .academic-card::before { content: ''; position: absolute; top: -15px; right: 30px; width: 40px; height: 40px; background: var(--uc-gold); border-radius: 50%; border: 3px solid #fff; }
@@ -68,14 +45,7 @@
     .step-icon { font-size: 32px; color: var(--uc-gold); margin-bottom: 15px; }
     .step-card h3 { font-size: 18px; color: #fff; margin-bottom: 10px; }
     .step-card p { font-size: 13px; color: var(--text-dim); }
-
-    /* NEW - Scrollable Leaderboard */
-    .ranking-container {
-      max-height: 400px;
-      overflow-y: auto;
-      background: rgba(0,0,0,0.3);
-      border-radius: 4px;
-    }
+    .ranking-container { max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 4px; }
     .ranking-container::-webkit-scrollbar { width: 8px; }
     .ranking-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
     .ranking-container::-webkit-scrollbar-thumb { background: var(--uc-gold); border-radius: 4px; }
@@ -87,7 +57,6 @@
     .rank-1 { color: #FFD700; }
     .rank-2 { color: #C0C0C0; }
     .rank-3 { color: #CD7F32; }
-
     .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
     .gallery-card { background: rgba(0,0,0,0.7); border: 4px solid var(--mc-wood); overflow: hidden; }
     .gallery-image { width: 100%; height: 200px; object-fit: cover; border-bottom: 4px solid var(--mc-wood); cursor: zoom-in; image-rendering: pixelated; }
@@ -128,18 +97,12 @@
 </div>
 <div class="container">
   <header>
-    <!-- NEW - Logo Banner -->
     <div class="logo-banner">
-      <!-- UC Logo - Pixel Art Style -->
       <svg viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
-        <!-- UC Letters - Gold -->
         <text x="30" y="65" font-family="Press Start 2P, cursive" font-size="50" fill="#FDB515" stroke="#000" stroke-width="2">UC</text>
-        <!-- Minecraft Style Block -->
         <rect x="130" y="30" width="40" height="40" fill="#5b9a4a" stroke="#000" stroke-width="2"/>
         <rect x="130" y="50" width="40" height="20" fill="#9c7f4f" stroke="#000" stroke-width="2"/>
-        <!-- = Symbol -->
         <text x="185" y="65" font-family="Press Start 2P, cursive" font-size="40" fill="#fff" stroke="#000" stroke-width="2">=</text>
-        <!-- SMP Text -->
         <text x="235" y="65" font-family="Press Start 2P, cursive" font-size="35" fill="#10B981" stroke="#000" stroke-width="2">SMP</text>
       </svg>
       <div class="logo-text">UC <span>MINECRAFT</span></div>
@@ -171,12 +134,10 @@
   <div class="info-section">
     <h2 class="section-title">Class Rankings</h2>
     <p style="text-align:center; color:var(--text-dim); margin-bottom:30px;">Ranked by Total Playtime</p>
-
-    <!-- NEW - Scrollable Leaderboard -->
     <div class="ranking-container">
       <table class="ranking-table">
         <thead><tr><th>Rank</th><th>Student Name</th><th>Playtime</th></tr></thead>
-        <tbody id="leaderboardBody"></tbody>
+        <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center; padding:40px;">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -191,18 +152,8 @@
 <script>
 const SERVER_IP = 'ucminecraft.artisen.xyz';
 
-const PLAYER_DATA = [
-  { name: "Kommunist_", time: "2d 1h" },
-  { name: "MobiusDouble_NEO", time: "1d 14h" },
-  { name: "LiltingLullaby", time: "2d 7h" },
-  { name: "CrimsonCorsair33", time: "10h" },
-  { name: "yumihan", time: "19h" },
-  { name: "Buggybug0", time: "5h" },
-  { name: "iQuin", time: "22h" },
-  { name: "NecessaryBONK", time: "7h" },
-  { name: "Enderdrin", time: "39m" },
-  { name: "camly0803", time: "17m" }
-];
+// API URL - Replace with your PHP file URL once uploaded
+const API_URL = 'https://your-domain.com/api.php';
 
 async function checkStatus() {
   const statusDot = document.getElementById('statusDot');
@@ -215,12 +166,23 @@ async function checkStatus() {
   } catch (e) { statusDot.classList.add('online'); statusText.textContent = "ONLINE"; playerCount.textContent = "?"; }
 }
 
-function loadLeaderboard() {
-  const tbody = document.getElementById('leaderboardBody');
-  tbody.innerHTML = PLAYER_DATA.map((p, i) => {
-    let rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
-    return `<tr><td class="rank-col ${rankClass}">#${i+1}</td><td style="font-weight:bold;color:#fff">${p.name}</td><td style="font-family:'Press Start 2P';font-size:10px;color:var(--uc-gold)">${p.time}</td></tr>`;
-  }).join('');
+// NEW - Fetch from PHP API
+async function loadLeaderboard() {
+  try {
+    const res = await fetch(API_URL);
+    const players = await res.json();
+
+    if (!players || players.length === 0) {
+      throw new Error('No data');
+    }
+
+    document.getElementById('leaderboardBody').innerHTML = players.map((p, i) => {
+      let rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
+      return `<tr><td class="rank-col ${rankClass}">#${i+1}</td><td style="font-weight:bold;color:#fff">${p.name}</td><td style="font-family:'Press Start 2P';font-size:10px;color:var(--uc-gold)">${p.time}</td></tr>`;
+    }).join('');
+  } catch (e) {
+    document.getElementById('leaderboardBody').innerHTML = '<tr><td colspan="3" style="text-align:center; padding:40px;">Unable to load rankings. Please set up api.php</td></tr>';
+  }
 }
 
 function loadGallery() {
