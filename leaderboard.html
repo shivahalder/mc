@@ -234,13 +234,14 @@
               <tr>
                 <th class="rank-cell">Rank</th>
                 <th>Player</th>
+                <th>Deaths</th>
                 <th>Sessions</th>
                 <th>Playtime</th>
               </tr>
             </thead>
             <tbody id="leaderboard-body">
               <tr>
-                <td colspan="4" class="loading">Fetching data from server...</td>
+                <td colspan="5" class="loading">Fetching data from server...</td>
               </tr>
             </tbody>
           </table>
@@ -302,14 +303,13 @@
         const players = json.data || [];
 
         if (players.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="4" class="loading">No player data found for Server 1.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="5" class="loading">No player data found for Server 1.</td></tr>';
           return;
         }
 
         tbody.innerHTML = '';
         players.forEach((player, index) => {
           // Extract name and UUID from the HTML string in player.name
-          // Format: <a class="link" href="../player/UUID">NAME</a>
           const nameMatch = player.name.match(/>([^<]+)<\/a>/);
           const uuidMatch = player.name.match(/player\/([^"]+)"/);
           
@@ -317,9 +317,9 @@
           const uuid = uuidMatch ? uuidMatch[1] : '';
           const playtime = player.activePlaytime ? player.activePlaytime.v : 0;
           const sessions = player.sessions || 0;
+          const deaths = player.deaths ? player.deaths.v : 0;
 
           const row = document.createElement('tr');
-          // Using minotar.net for avatars
           const headUrl = uuid ? `https://minotar.net/avatar/${uuid}/64` : '';
 
           row.innerHTML = `
@@ -330,6 +330,7 @@
                 <span class="player-name">${name}</span>
               </div>
             </td>
+            <td>${deaths}</td>
             <td>${sessions}</td>
             <td class="playtime-cell">${formatTime(playtime)}</td>
           `;
@@ -339,7 +340,7 @@
         console.error('Leaderboard error:', err);
         tbody.innerHTML = `
           <tr>
-            <td colspan="4" class="error">
+            <td colspan="5" class="error">
               <i class="fas fa-exclamation-circle"></i>
               Unable to load leaderboard data.<br>
               <span style="font-size: 0.9rem; opacity: 0.8; font-weight: 400;">
