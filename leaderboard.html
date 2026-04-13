@@ -234,14 +234,13 @@
               <tr>
                 <th class="rank-cell">Rank</th>
                 <th>Player</th>
-                <th>Deaths</th>
                 <th>Sessions</th>
                 <th>Playtime</th>
               </tr>
             </thead>
             <tbody id="leaderboard-body">
               <tr>
-                <td colspan="5" class="loading">Fetching data from server...</td>
+                <td colspan="4" class="loading">Fetching data from server...</td>
               </tr>
             </tbody>
           </table>
@@ -310,7 +309,7 @@
         const players = json.data || [];
 
         if (players.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="loading">No player data found for Server 1.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="4" class="loading">No player data found for Server 1.</td></tr>';
           return;
         }
 
@@ -336,13 +335,6 @@
           }
           
           const sessions = stripHtml(player.sessions) || 0;
-          
-          // API currently doesn't provide deaths in the players list in a standard way,
-          // but we'll strip HTML just in case it's returned as a formatted object/string
-          let deaths = '0';
-          if (player.deaths) {
-            deaths = stripHtml(player.deaths.d) || stripHtml(player.deaths.v) || stripHtml(player.deaths);
-          }
 
           const row = document.createElement('tr');
           const headUrl = uuid ? `https://minotar.net/avatar/${uuid}/64` : '';
@@ -355,7 +347,6 @@
                 <span class="player-name">${name}</span>
               </div>
             </td>
-            <td>${deaths}</td>
             <td>${sessions}</td>
             <td class="playtime-cell">${playtime}</td>
           `;
@@ -365,7 +356,7 @@
         console.error('Leaderboard error:', err);
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="error">
+            <td colspan="4" class="error">
               <i class="fas fa-exclamation-circle"></i>
               Unable to load leaderboard data.<br>
               <span style="font-size: 0.9rem; opacity: 0.8; font-weight: 400;">
