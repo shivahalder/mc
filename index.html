@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UC Minecraft | Official Network</title>
+  <meta name="description" content="Connecting students across all 10 UC campuses. Join our unified community! Java: UCMINECRAFT.ARTISEN.XYZ | Bedrock: direct-connect.artisen.xyz">
+  <meta property="og:title" content="UC Minecraft | Official Network">
+  <meta property="og:description" content="Connecting students across all 10 UC campuses. Join our unified community! Java: UCMINECRAFT.ARTISEN.XYZ | Bedrock: direct-connect.artisen.xyz">
+  <meta property="og:image" content="https://raw.githubusercontent.com/uc-minecraft/uc-minecraft.github.io/main/ucmc.png">
+  <meta property="og:url" content="https://uc-minecraft.github.io/">
+  <meta name="theme-color" content="#F2A900">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <link rel="icon" type="image/png" href="ucmc.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="ucmc.png" sizes="16x16">
+  <link rel="shortcut icon" href="ucmc.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="ucmc.png"> <!-- For mobile bookmarking -->
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --uc-gold: #F2A900;
+      --uc-blue: #003262;
+      --uc-dark-blue: #002147;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    
+    html, body { 
+      width: 100%; 
+      height: 100%; 
+      margin: 0; 
+      padding: 0; 
+      overflow: hidden; 
+    }
+
+    body { 
+      min-height: 100vh;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      background-color: #0c141f;
+      margin: 0;
+    }
+
+    /* Optimized Performance Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(12, 20, 31, 0.8), rgba(12, 20, 31, 0.95)), url('main-image.png') no-repeat center center;
+      background-size: cover;
+      z-index: -1;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+    }
+
+    /* CUSTOM CSS LOGO - The UC Shield */
+    .custom-logo {
+      width: 120px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* TOP NAVIGATION - Clean, No Dots */
+    nav { 
+      width: 100%; 
+      height: 120px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 0 10%; 
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(12, 20, 31, 0.9), transparent);
+    }
+    .nav-brand { 
+      display: flex; 
+      align-items: center; 
+      gap: 15px; 
+      text-decoration: none;
+      color: #fff;
+    }
+    
+    .nav-links { display: flex; gap: 45px; list-style: none; }
+    .nav-links li a { 
+      color: #fff; 
+      font-size: 0.9rem; 
+      font-weight: 700; 
+      opacity: 0.7; 
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transition: var(--transition);
+      text-decoration: none;
+      padding: 0;
+      border: none; /* Removed indicators */
+    }
+    .nav-links li a:hover, .nav-links li a.active { 
+      opacity: 1; 
+      color: var(--uc-gold);
+    }
+
+    /* HERO SECTION */
+    .hero { 
+      flex: 1; 
+      display: flex; 
+      align-items: center; 
+      padding: 0 10%; 
+      position: relative;
+    }
+    .hero-container { 
+      width: 100%; 
+      max-width: 1400px; 
+      margin: 0 auto;
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+    }
+    
+    .hero-left { max-width: 650px; }
+    .hero-label { 
+      font-size: 0.9rem; 
+      font-weight: 800; 
+      color: var(--uc-gold); 
+      text-transform: uppercase; 
+      letter-spacing: 4px; 
+      margin-bottom: 20px;
+      display: block;
+    }
+    .hero-headline { 
+      font-family: 'Montserrat', sans-serif; 
+      font-size: 5.5rem; 
+      font-weight: 950; 
+      color: #fff; 
+      line-height: 1; 
+      margin-bottom: 30px; 
+      text-transform: uppercase;
+      letter-spacing: -2px;
+    }
+    .hero-desc { 
+      font-size: 1.15rem; 
+      color: rgba(255,255,255,0.85); 
+      line-height: 1.8; 
+      margin-bottom: 45px;
+    }
+    
+    .hero-btns { display: flex; gap: 20px; }
+    .btn { 
+      padding: 18px 45px; 
+      font-size: 1rem; 
+      font-weight: 800; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      transition: var(--transition); 
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .btn-blue { 
+      background: var(--uc-gold); 
+      color: var(--uc-dark-blue); 
+      box-shadow: 0 10px 30px rgba(242, 169, 0, 0.2);
+    }
+    .btn-outline { 
+      background: rgba(255, 255, 255, 0.05); 
+      color: #fff; 
+      border: 2px solid rgba(255, 255, 255, 0.2); 
+      backdrop-filter: blur(8px);
+    }
+    .btn-blue:hover { 
+      transform: translateY(-5px); 
+      background: #fff;
+      box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+    }
+    .btn-outline:hover { 
+      background: rgba(255, 255, 255, 0.1); 
+      border-color: #fff;
+      transform: translateY(-5px);
+    }
+
+    /* CUSTOM LARGE SHIELD LOGO */
+    .hero-right { flex: 0 0 500px; display: flex; justify-content: center; }
+    .large-logo {
+      width: 350px;
+      height: auto;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+    }
+
+    /* UNIFIED STAT BAR - Clean academic style */
+    .stat-bar { 
+      margin-top: 40px;
+      display: inline-flex; 
+      background: rgba(0, 33, 71, 0.6); 
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 6px;
+      border: 1px solid rgba(242, 169, 0, 0.3);
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      transform: translate3d(0,0,0);
+    }
+    .stat-segment {
+      padding: 20px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: var(--transition);
+      text-decoration: none;
+      color: #fff;
+    }
+    .stat-segment:first-child { border-right: 1px solid rgba(255,255,255,0.1); }
+    .stat-segment:hover { background: rgba(255,255,255,0.05); }
+    
+    .segment-label { font-size: 0.75rem; font-weight: 800; color: var(--uc-gold); text-transform: uppercase; letter-spacing: 1.5px; }
+    .segment-value { font-size: 1.2rem; font-weight: 900; }
+    .segment-value span { opacity: 0.6; font-size: 0.9rem; font-weight: 600; margin-left: 5px; }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+
+    #toast { 
+      position: fixed; bottom: 40px; right: 40px; background: var(--uc-gold); 
+      color: var(--uc-dark-blue); padding: 20px 45px; border-radius: 4px; font-weight: 900; 
+      text-transform: uppercase; transform: translateY(200px); transition: var(--transition); 
+      z-index: 10000; box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+    #toast.active { transform: translateY(0); }
+
+    @media (max-width: 1024px) { 
+      body { overflow-y: auto; height: auto; }
+      .hero { height: auto; padding: 150px 5% 100px; }
+      .hero-container { flex-direction: column; text-align: center; }
+      .hero-btns { justify-content: center; }
+      .hero-right { order: -1; margin-bottom: 60px; }
+      .large-logo { width: 250px; height: auto; }
+      .stat-bar { position: static; margin: 60px auto 0; flex-direction: column; width: 100%; max-width: 400px; }
+      .stat-segment:first-child { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <img src="ucmc.png" alt="UC Logo" class="custom-logo">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="rules.html">Rules</a></li>
+      <li><a href="staff.html">Admin-Team</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="leaderboard.html">Leaderboard</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="hero">
+    <div class="hero-container">
+      <section class="hero-left">
+        <span class="hero-label">Official University SMP</span>
+        <h1 class="hero-headline">UC MINECRAFT</h1>
+        <p class="hero-desc">The official survival network connecting students across all 10 University of California campuses. Join a unified community with your fellow students. Other colleges are accepted here as well! This is just a fun survival server that the owners decided to make.</p>
+        
+        <div class="hero-btns">
+          <button class="btn btn-blue" onclick="copyIp('UCMINECRAFT.ARTISEN.XYZ', 'Java')">Java IP</button>
+          <button class="btn btn-outline" onclick="copyIp('direct-connect.artisen.xyz', 'Bedrock', '19132')">Bedrock IP: 19132</button>
+          <a href="rules.html" class="btn btn-outline">Explore</a>
+        </div>
+
+        <div class="stat-bar">
+          <a href="https://discord.com/invite/peSB774D5j" target="_blank" class="stat-segment">
+            <span class="segment-label">Network Discord</span>
+            <span class="segment-value"><span id="discord-count">...</span> <span>Members</span></span>
+          </a>
+          <div class="stat-segment">
+            <span class="segment-label">Network Status</span>
+            <span class="segment-value"><span id="pc">...</span> <span>Online</span></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="hero-right">
+        <img src="ucmc.png" alt="UC Logo" class="large-logo">
+      </section>
+    </div>
+  </main>
+
+  <div id="toast">IP Copied!</div>
+
+  <script>
+    function copyIp(text, type, port) {
+      const fullText = port ? `${text}:${port}` : text;
+      navigator.clipboard.writeText(fullText);
+      const toast = document.getElementById('toast');
+      toast.textContent = `${type} ${port ? 'IP & Port' : 'IP'} Copied!`;
+      toast.classList.add('active');
+      setTimeout(() => toast.classList.remove('active'), 3000);
+    }
+    
+    async function updateStatus() {
+      // Minecraft Status
+      try {
+        const response = await fetch(`https://api.mcsrvstat.us/3/UCMINECRAFT.ARTISEN.XYZ`);
+        const data = await response.json();
+        if(data.online) document.getElementById('pc').textContent = data.players.online;
+      } catch (err) {}
+
+      // Discord Status (Total Members)
+      try {
+        const response = await fetch(`https://discord.com/api/v10/invites/peSB774D5j?with_counts=true`);
+        const data = await response.json();
+        if(data.approximate_member_count !== undefined) {
+          document.getElementById('discord-count').textContent = data.approximate_member_count.toLocaleString();
+        }
+      } catch (err) {
+        document.getElementById('discord-count').textContent = 'Join';
+      }
+    }
+    
+    updateStatus();
+    setInterval(updateStatus, 60000);
+  </script>
+</body>
+</html>
