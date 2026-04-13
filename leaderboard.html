@@ -283,6 +283,13 @@
       return `${minutes}m`;
     }
 
+    function stripHtml(html) {
+      if (!html) return '';
+      if (typeof html !== 'string') return String(html);
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      return doc.body.textContent || "";
+    }
+
     async function fetchLeaderboard() {
       const tbody = document.getElementById('leaderboard-body');
       try {
@@ -310,18 +317,32 @@
         tbody.innerHTML = '';
         players.forEach((player, index) => {
           // Extract name and UUID from the HTML string in player.name
-          const nameMatch = player.name.match(/>([^<]+)<\/a>/);
-          const uuidMatch = player.name.match(/player\/([^"]+)"/);
-          
-          const name = nameMatch ? nameMatch[1] : 'Unknown';
-          const uuid = uuidMatch ? uuidMatch[1] : '';
+          // Sometimes player.name is just the name, sometimes it's an <a> tag
+          let name = 'Unknown';
+          let uuid = '';
+
+          if (player.name) {
+            const nameMatch = player.name.match(/>([^<]+)<\/a>/);
+            name = nameMatch ? nameMatch[1] : stripHtml(player.name);
+            
+            const uuidMatch = player.name.match(/player\/([^"]+)"/);
+            uuid = uuidMatch ? uuidMatch[1] : '';
+          }
           
           // Use the pre-formatted playtime from the API if available, otherwise format manually
-          const playtime = player.activePlaytime ? (player.activePlaytime.d || formatTime(player.activePlaytime.v)) : '0m';
-          const sessions = player.sessions || 0;
+          let playtime = '0m';
+          if (player.activePlaytime) {
+            playtime = stripHtml(player.activePlaytime.d) || formatTime(player.activePlaytime.v);
+          }
           
-          // API currently doesn't provide deaths in the players list, so we'll show '-' or '0'
-          const deaths = player.deaths ? (player.deaths.v || player.deaths.d || 0) : '0';
+          const sessions = stripHtml(player.sessions) || 0;
+          
+          // API currently doesn't provide deaths in the players list in a standard way,
+          // but we'll strip HTML just in case it's returned as a formatted object/string
+          let deaths = '0';
+          if (player.deaths) {
+            deaths = stripHtml(player.deaths.d) || stripHtml(player.deaths.v) || stripHtml(player.deaths);
+          }
 
           const row = document.createElement('tr');
           const headUrl = uuid ? `https://minotar.net/avatar/${uuid}/64` : '';
