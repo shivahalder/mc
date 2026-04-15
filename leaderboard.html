@@ -289,24 +289,45 @@
       return doc.body.textContent || "";
     }
 
-    async function fetchLeaderboard() {
+    async function fetchLeaderboard(retries = 3) {
       const tbody = document.getElementById('leaderboard-body');
       try {
-        const apiUrl = 'http://217.216.40.184:8805/v1/players?server=Server%201&sort=playtime&desc=true&limit=50';
+        const apiUrl = 'http://217.216.40.184:8805/v1/players?server=Server%201&sort=playtime&desc=true&limit=100';
         
         // Use allorigins.win proxy to bypass HTTPS -> HTTP mixed content blocking
         const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`);
         
-        if (!response.ok) throw new Error('Proxy server returned an error.');
+        if (!response.ok) {
+          if (retries > 0) {
+            console.warn(`Fetch failed, retrying... (${retries} left)`);
+            setTimeout(() => fetchLeaderboard(retries - 1), 2000);
+            return;
+          }
+          throw new Error('Proxy server returned an error.');
+        }
 
         const wrapper = await response.json();
         
         if (!wrapper || !wrapper.contents) {
+          if (retries > 0) {
+            setTimeout(() => fetchLeaderboard(retries - 1), 2000);
+            return;
+          }
           throw new Error('No data received from the proxy. The Plan API might be down.');
         }
 
         const json = JSON.parse(wrapper.contents);
-        const players = json.data || [];
+        let players = json.data || [];
+
+        // Sort players by active playtime (v) descending, as the API might return them unsorted
+        players.sort((a, b) => {
+          const valA = (a.activePlaytime && a.activePlaytime.v) ? parseInt(a.activePlaytime.v) : 0;
+          const valB = (b.activePlaytime && b.activePlaytime.v) ? parseInt(b.activePlaytime.v) : 0;
+          return valB - valA;
+        });
+
+        // Limit to top 20
+        players = players.slice(0, 20);
 
         if (players.length === 0) {
           tbody.innerHTML = '<tr><td colspan="4" class="loading">No player data found for Server 1.</td></tr>';
@@ -353,6 +374,10 @@
           tbody.appendChild(row);
         });
       } catch (err) {
+        if (retries > 0) {
+          setTimeout(() => fetchLeaderboard(retries - 1), 2000);
+          return;
+        }
         console.error('Leaderboard error:', err);
         tbody.innerHTML = `
           <tr>
@@ -368,7 +393,11 @@
       }
     }
 
+    // Fetch once on load
     fetchLeaderboard();
+
+    // Auto-refresh every 30 seconds
+    setInterval(fetchLeaderboard, 30000);
   </script>
 
 </body>
