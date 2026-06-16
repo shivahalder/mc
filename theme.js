@@ -3,9 +3,9 @@
  */
 window.UCTheme = {
   server: {
-    java: { host: "ucminecraft.com", label: "Java" },
-    bedrock: { host: "ucminecraft.com", port: 19132, label: "Bedrock" },
-    statusHost: "ucminecraft.com",
+    java: { host: "play.ucminecraft.com", label: "Java" },
+    bedrock: { host: "play.ucminecraft.com", port: 19132, label: "Bedrock" },
+    statusHost: "play.ucminecraft.com",
   },
   social: {
     discord: {
