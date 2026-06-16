@@ -1,0 +1,23 @@
+{
+  "name": "mc-main",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/shivahalder/mc#readme",
+  "bugs": {
+    "url": "https://github.com/shivahalder/mc/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivahalder/mc.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "site.js",
+  "scripts": {
+    "dev": "powershell -ExecutionPolicy Bypass -File preview.ps1",
+    "preview": "powershell -ExecutionPolicy Bypass -File preview.ps1",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {}
+}
